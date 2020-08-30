@@ -1,13 +1,13 @@
-import * as Phaser from 'phaser';
+import { Scene } from 'phaser';
 
-class SimpleScene extends Phaser.Scene {
+class SimpleScene extends Scene {
   preload() {
-    this.load.image('cokecan', 'assets/cokecan.png');
+    this.load.image('ship', 'assets/ship.png');
   }
 
   create() {
     this.add.text(100, 100, 'Hello Phaser!', { fill: '#0f0' });
-    this.add.image(100, 200, 'cokecan');
+    this.add.image(100, 200, 'ship');
   }
 }
 

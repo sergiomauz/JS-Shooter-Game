@@ -1,3 +1,3 @@
-import ShooterGame from './extends/shooter-game';
+import ShooterGame from './shooter-game';
 
 window.game = new ShooterGame();
