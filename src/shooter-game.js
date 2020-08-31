@@ -20,6 +20,6 @@ export default class ShooterGame extends Game {
     this.scene.add(SCENE_KEYS.CREDITS, CreditsScene);
     this.scene.add(SCENE_KEYS.GAME, GameScene);
 
-    // this.scene.start(SCENE_KEYS.GAME);
+    this.scene.start(SCENE_KEYS.BOOT);
   }
 }
