@@ -70,12 +70,18 @@ export default class PreloaderScene extends Scene {
     this.timedEvent = this.time.delayedCall(3000, this.ready, [], this);
 
     // load assets needed
+    this.load.image('ship', 'assets/sprites/ship.png');
+    this.load.image('bullet', 'assets/sprites/bullet.png');
+    ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10'].forEach((asteroid) => {
+      this.load.image('asteroid'.concat(asteroid), `assets/sprites/asteroids/${asteroid}.png`);
+    });
+    this.load.image('spaceBackground', 'assets/space_background.png');
     this.load.image('blueButton1', 'assets/ui/red_button01.png');
     this.load.image('blueButton2', 'assets/ui/red_button02.png');
     this.load.image('phaserLogo', 'assets/logo.png');
     this.load.image('box', 'assets/ui/red_box.png');
     this.load.image('checkedBox', 'assets/ui/red_box_checked.png');
-    this.load.audio('bgMusic', ['assets/TownTheme.mp3']);
+    this.load.audio('bgMusic', ['assets/music.mod']);
   }
 
   init() {

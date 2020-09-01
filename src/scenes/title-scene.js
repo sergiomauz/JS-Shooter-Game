@@ -23,7 +23,13 @@ export default class TitleScene extends Scene {
     );
   }
 
+  preload() {
+    this.load.image('logo', 'assets/logo.png');
+  }
+
   create() {
+    this.add.image(400, 175, 'logo');
+
     this.gameButton = this.add.sprite(300, 200, 'blueButton1').setInteractive();
     this.centerButton(this.gameButton, 1);
 

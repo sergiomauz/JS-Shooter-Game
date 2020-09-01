@@ -10,7 +10,7 @@ import CreditsScene from './scenes/credits-scene';
 
 export default class ShooterGame extends Game {
   constructor() {
-    CONFIG.scene = new GameScene();
+    CONFIG.scene = new BootScene();
     super(CONFIG);
 
     this.scene.add(SCENE_KEYS.BOOT, BootScene);

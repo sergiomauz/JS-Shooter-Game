@@ -36,6 +36,12 @@ module.exports = {
           'file-loader',
         ],
       },
+      {
+        test: /\.(mp3|mod)$/,
+        use: [
+          'file-loader',
+        ],
+      },
     ],
   },
   devServer: {
