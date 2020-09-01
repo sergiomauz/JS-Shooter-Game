@@ -36,6 +36,12 @@ module.exports = {
           'file-loader',
         ],
       },
+      {
+        test: /\.(mp3|mod)$/,
+        use: [
+          'file-loader',
+        ],
+      },
     ],
   },
   devServer: {
@@ -48,6 +54,10 @@ module.exports = {
           {
             from: path.resolve(__dirname, 'src/index.html'),
             to: path.resolve(__dirname, 'build'),
+          },
+          {
+            from: path.resolve(__dirname, 'src/assets'),
+            to: path.resolve(__dirname, 'build/assets'),
           },
         ],
       },
