@@ -1,18 +1,19 @@
 import { Scene, Display } from 'phaser';
 import SCENE_KEYS from '../components/scene-keys';
+import ASSETS_KEYS from '../components/assets-keys';
 
 export default class OptionsScene extends Scene {
   updateAudio() {
     if (this.musicOn === false) {
-      this.musicButton.setTexture('box');
+      this.musicButton.setTexture(ASSETS_KEYS.UNCHECKED_BOX);
     } else {
-      this.musicButton.setTexture('checkedBox');
+      this.musicButton.setTexture(ASSETS_KEYS.CHECKED_BOX);
     }
 
     if (this.soundOn === false) {
-      this.soundButton.setTexture('box');
+      this.soundButton.setTexture(ASSETS_KEYS.UNCHECKED_BOX);
     } else {
-      this.soundButton.setTexture('checkedBox');
+      this.soundButton.setTexture(ASSETS_KEYS.CHECKED_BOX);
     }
   }
 
@@ -22,10 +23,10 @@ export default class OptionsScene extends Scene {
 
     this.text = this.add.text(300, 100, 'Options', { fontSize: 40, fill: '#2BF607', fontWeight: 'bold' });
 
-    this.musicButton = this.add.image(200, 200, 'checkedBox');
+    this.musicButton = this.add.image(200, 200, ASSETS_KEYS.CHECKED_BOX);
     this.musicText = this.add.text(250, 190, 'Music Enabled', { fontSize: 24, fill: '#2BF607', fontWeight: 'bold' });
 
-    this.soundButton = this.add.image(200, 300, 'checkedBox');
+    this.soundButton = this.add.image(200, 300, ASSETS_KEYS.CHECKED_BOX);
     this.soundText = this.add.text(250, 290, 'Sound Enabled', { fontSize: 24, fill: '#2BF607', fontWeight: 'bold' });
 
     this.musicButton.setInteractive();
@@ -41,7 +42,7 @@ export default class OptionsScene extends Scene {
       this.updateAudio();
     });
 
-    this.menuButton = this.add.sprite(400, 500, 'blueButton1').setInteractive();
+    this.menuButton = this.add.sprite(400, 500, ASSETS_KEYS.BUTTON).setInteractive();
     this.menuText = this.add.text(0, 0, 'Menu', { fontSize: '32px', fill: '#2BF607' });
     Display.Align.In.Center(this.menuText, this.menuButton);
 
@@ -50,11 +51,11 @@ export default class OptionsScene extends Scene {
     });
 
     this.menuButton.on('pointerover', () => {
-      this.menuButton.setTexture('blueButton2');
+      this.menuButton.setTexture(ASSETS_KEYS.BUTTON_ON_HOVER);
     });
 
     this.menuButton.on('pointerout', () => {
-      this.menuButton.setTexture('blueButton1');
+      this.menuButton.setTexture(ASSETS_KEYS.BUTTON);
     });
 
     this.updateAudio();

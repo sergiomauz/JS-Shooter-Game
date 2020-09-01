@@ -2,6 +2,7 @@
 import { Scene, Display } from 'phaser';
 import CONFIG from '../components/config';
 import SCENE_KEYS from '../components/scene-keys';
+import ASSETS_KEYS from '../components/assets-keys';
 
 export default class TitleScene extends Scene {
   addBackground() {
@@ -37,7 +38,7 @@ export default class TitleScene extends Scene {
 
     this.add.image(400, 175, 'logo');
 
-    this.gameButton = this.add.sprite(300, 200, 'blueButton1').setInteractive();
+    this.gameButton = this.add.sprite(300, 200, ASSETS_KEYS.BUTTON).setInteractive();
     this.centerButton(this.gameButton, 1);
 
     this.gameText = this.add.text(0, 0, 'Play', { fontSize: '32px', fill: '#2BF607' });
@@ -47,7 +48,7 @@ export default class TitleScene extends Scene {
       this.scene.start(SCENE_KEYS.GAME);
     });
 
-    this.optionsButton = this.add.sprite(300, 200, 'blueButton1').setInteractive();
+    this.optionsButton = this.add.sprite(300, 200, ASSETS_KEYS.BUTTON).setInteractive();
     this.centerButton(this.optionsButton);
 
     this.optionsText = this.add.text(0, 0, 'Options', { fontSize: '32px', fill: '#2BF607' });
@@ -57,7 +58,7 @@ export default class TitleScene extends Scene {
       this.scene.start(SCENE_KEYS.OPTIONS);
     });
 
-    this.creditsButton = this.add.sprite(300, 200, 'blueButton1').setInteractive();
+    this.creditsButton = this.add.sprite(300, 200, ASSETS_KEYS.BUTTON).setInteractive();
     this.centerButton(this.creditsButton, -1);
 
     this.creditsText = this.add.text(0, 0, 'Credits', { fontSize: '32px', fill: '#2BF607' });
@@ -68,11 +69,11 @@ export default class TitleScene extends Scene {
     });
 
     this.input.on('pointerover', (event, gameObjects) => {
-      gameObjects[0].setTexture('blueButton2');
+      gameObjects[0].setTexture(ASSETS_KEYS.BUTTON_ON_HOVER);
     });
 
     this.input.on('pointerout', (event, gameObjects) => {
-      gameObjects[0].setTexture('blueButton1');
+      gameObjects[0].setTexture(ASSETS_KEYS.BUTTON);
     });
   }
 

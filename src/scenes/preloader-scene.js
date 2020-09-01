@@ -1,7 +1,31 @@
 import { Scene } from 'phaser';
 import SCENE_KEYS from '../components/scene-keys';
+import ASSETS_KEYS from '../components/assets-keys';
 
 export default class PreloaderScene extends Scene {
+  loadAssets() {
+    this.load.image(ASSETS_KEYS.SHIP, 'assets/sprites/ship.png');
+    this.load.image(ASSETS_KEYS.BULLET, 'assets/sprites/bullet.png');
+    this.load.image(ASSETS_KEYS.SPACE_BACKGROUND, 'assets/space_background.png');
+    this.load.image(ASSETS_KEYS.LOGO, 'assets/logo.png');
+    this.load.image(ASSETS_KEYS.BUTTON, 'assets/ui/red_button01.png');
+    this.load.image(ASSETS_KEYS.BUTTON_ON_HOVER, 'assets/ui/red_button02.png');
+    this.load.image(ASSETS_KEYS.UNCHECKED_BOX, 'assets/ui/red_box.png');
+    this.load.image(ASSETS_KEYS.CHECKED_BOX, 'assets/ui/red_box_checked.png');
+
+    this.load.audio('bgMusic', ['assets/music.mod']);
+    ['01', '02', '03', '04', '05'].forEach((asteroid) => {
+      this.load.spritesheet('asteroid'.concat(asteroid), `assets/sprites/asteroids/${asteroid}.png`, {
+        frameWidth: 120,
+        frameHeight: 120,
+      });
+    });
+    this.load.spritesheet('explosion', 'assets/sprites/asteroids/explosion.png', {
+      frameWidth: 120,
+      frameHeight: 120,
+    });
+  }
+
   preload() {
     // display progress bar
     const progressBar = this.add.graphics();
@@ -69,27 +93,8 @@ export default class PreloaderScene extends Scene {
 
     this.timedEvent = this.time.delayedCall(3000, this.ready, [], this);
 
-    // load assets needed
-    this.load.image('ship', 'assets/sprites/ship.png');
-    this.load.image('bullet', 'assets/sprites/bullet.png');
-    this.load.image('spaceBackground', 'assets/space_background.png');
-    this.load.image('blueButton1', 'assets/ui/red_button01.png');
-    this.load.image('blueButton2', 'assets/ui/red_button02.png');
-    this.load.image('phaserLogo', 'assets/logo.png');
-    this.load.image('box', 'assets/ui/red_box.png');
-    this.load.image('checkedBox', 'assets/ui/red_box_checked.png');
-    this.load.audio('bgMusic', ['assets/music.mod']);
-
-    ['01', '02', '03', '04', '05'].forEach((asteroid) => {
-      this.load.spritesheet('asteroid'.concat(asteroid), `assets/sprites/asteroids/${asteroid}.png`, {
-        frameWidth: 120,
-        frameHeight: 120,
-      });
-    });
-    this.load.spritesheet('explosion', 'assets/sprites/asteroids/explosion.png', {
-      frameWidth: 120,
-      frameHeight: 120,
-    });
+    // load assets
+    this.loadAssets();
   }
 
   init() {

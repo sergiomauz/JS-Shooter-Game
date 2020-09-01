@@ -118,8 +118,8 @@ export default class GameScene extends Scene {
     this.addShip();
     this.addEvents();
 
-    this.physics.physics.add.collider(this.asteroid01, this.ship, () => {
-      destroyAsteroid();
+    this.physics.add.collider(this.asteroid01, this.ship, () => {
+      this.destroyAsteroid();
     });
   }
 
