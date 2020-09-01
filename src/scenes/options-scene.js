@@ -1,5 +1,4 @@
 import { Scene, Display } from 'phaser';
-import CONFIG from '../components/config';
 import SCENE_KEYS from '../components/scene-keys';
 
 export default class OptionsScene extends Scene {
