@@ -5,21 +5,77 @@ import CONFIG from '../components/config';
 
 export default class GameScene extends Scene {
   addBackground() {
-    // this.background = this.add.image(0, 0, 'spaceBackground');
     this.background = this.add.tileSprite(0, 0, CONFIG.width, CONFIG.height, 'spaceBackground');
     this.background.setOrigin(0, 0);
   }
 
+  destroyAsteroid(pointer, gameObject) {
+    gameObject.setTexture('explosion');
+    gameObject.play('explosion_anim');
+  }
+
   addAsteroids() {
-    this.asteroid01 = this.add.image(Math.Between(0, CONFIG.width) - 100, 0, 'asteroid01');
-    this.asteroid02 = this.add.image(Math.Between(0, CONFIG.width) - 75, 0, 'asteroid02');
-    this.asteroid03 = this.add.image(Math.Between(0, CONFIG.width) - 50, 0, 'asteroid03');
-    this.asteroid04 = this.add.image(Math.Between(0, CONFIG.width) - 25, 0, 'asteroid04');
-    this.asteroid05 = this.add.image(Math.Between(0, CONFIG.width), 0, 'asteroid05');
+    this.asteroid01 = this.add.sprite(Math.Between(0, CONFIG.width) - 100, 0, 'asteroid01');
+    this.asteroid02 = this.add.sprite(Math.Between(0, CONFIG.width) - 75, 0, 'asteroid02');
+    this.asteroid03 = this.add.sprite(Math.Between(0, CONFIG.width) - 50, 0, 'asteroid03');
+    this.asteroid04 = this.add.sprite(Math.Between(0, CONFIG.width) - 25, 0, 'asteroid04');
+    this.asteroid05 = this.add.sprite(Math.Between(0, CONFIG.width), 0, 'asteroid05');
+
+    this.anims.create({
+      key: 'asteroid01_anim',
+      frames: this.anims.generateFrameNumbers('asteroid01'),
+      frameRate: 20,
+      repeat: -1,
+    });
+    this.anims.create({
+      key: 'asteroid02_anim',
+      frames: this.anims.generateFrameNumbers('asteroid02'),
+      frameRate: 20,
+      repeat: -1,
+    });
+    this.anims.create({
+      key: 'asteroid03_anim',
+      frames: this.anims.generateFrameNumbers('asteroid03'),
+      frameRate: 20,
+      repeat: -1,
+    });
+    this.anims.create({
+      key: 'asteroid04_anim',
+      frames: this.anims.generateFrameNumbers('asteroid04'),
+      frameRate: 20,
+      repeat: -1,
+    });
+    this.anims.create({
+      key: 'asteroid05_anim',
+      frames: this.anims.generateFrameNumbers('asteroid05'),
+      frameRate: 20,
+      repeat: -1,
+    });
+    this.anims.create({
+      key: 'explosion_anim',
+      frames: this.anims.generateFrameNumbers('explosion'),
+      frameRate: 20,
+      repeat: 0,
+      hideOnComplete: true,
+    });
+
+    this.asteroid01.play('asteroid01_anim');
+    this.asteroid02.play('asteroid02_anim');
+    this.asteroid03.play('asteroid03_anim');
+    this.asteroid04.play('asteroid04_anim');
+    this.asteroid05.play('asteroid05_anim');
+
+    this.asteroid01.setInteractive();
+    this.asteroid02.setInteractive();
+    this.asteroid03.setInteractive();
+    this.asteroid04.setInteractive();
+    this.asteroid05.setInteractive();
+
+    this.input.on('gameobjectdown', this.destroyAsteroid, this);
   }
 
   addShip() {
-    this.ship = this.add.image(CONFIG.width / 2, CONFIG.height - 60, 'ship');
+    this.ship = this.add.sprite(CONFIG.width / 2, CONFIG.height - 60, 'ship');
   }
 
   shootBullet() {
@@ -61,6 +117,10 @@ export default class GameScene extends Scene {
     this.loadBullets();
     this.addShip();
     this.addEvents();
+
+    this.physics.physics.add.collider(this.asteroid01, this.ship, () => {
+      destroyAsteroid();
+    });
   }
 
   update() {

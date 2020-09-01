@@ -72,9 +72,6 @@ export default class PreloaderScene extends Scene {
     // load assets needed
     this.load.image('ship', 'assets/sprites/ship.png');
     this.load.image('bullet', 'assets/sprites/bullet.png');
-    ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10'].forEach((asteroid) => {
-      this.load.image('asteroid'.concat(asteroid), `assets/sprites/asteroids/${asteroid}.png`);
-    });
     this.load.image('spaceBackground', 'assets/space_background.png');
     this.load.image('blueButton1', 'assets/ui/red_button01.png');
     this.load.image('blueButton2', 'assets/ui/red_button02.png');
@@ -82,6 +79,17 @@ export default class PreloaderScene extends Scene {
     this.load.image('box', 'assets/ui/red_box.png');
     this.load.image('checkedBox', 'assets/ui/red_box_checked.png');
     this.load.audio('bgMusic', ['assets/music.mod']);
+
+    ['01', '02', '03', '04', '05'].forEach((asteroid) => {
+      this.load.spritesheet('asteroid'.concat(asteroid), `assets/sprites/asteroids/${asteroid}.png`, {
+        frameWidth: 120,
+        frameHeight: 120,
+      });
+    });
+    this.load.spritesheet('explosion', 'assets/sprites/asteroids/explosion.png', {
+      frameWidth: 120,
+      frameHeight: 120,
+    });
   }
 
   init() {

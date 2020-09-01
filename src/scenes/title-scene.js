@@ -4,6 +4,11 @@ import CONFIG from '../components/config';
 import SCENE_KEYS from '../components/scene-keys';
 
 export default class TitleScene extends Scene {
+  addBackground() {
+    this.background = this.add.tileSprite(0, 0, CONFIG.width, CONFIG.height, 'spaceBackground');
+    this.background.setOrigin(0, 0);
+  }
+
   centerButton(gameObject, offset = 0) {
     Display.Align.In.Center(
       gameObject,
@@ -28,6 +33,8 @@ export default class TitleScene extends Scene {
   }
 
   create() {
+    this.addBackground();
+
     this.add.image(400, 175, 'logo');
 
     this.gameButton = this.add.sprite(300, 200, 'blueButton1').setInteractive();
@@ -67,5 +74,9 @@ export default class TitleScene extends Scene {
     this.input.on('pointerout', (event, gameObjects) => {
       gameObjects[0].setTexture('blueButton1');
     });
+  }
+
+  update() {
+    this.background.tilePositionY -= 0.5;
   }
 }
