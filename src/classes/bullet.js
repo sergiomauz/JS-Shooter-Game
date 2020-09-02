@@ -1,22 +1,23 @@
-import { Physics } from 'phaser';
+import { GameObjects } from 'phaser';
+import ASSETS_KEYS from '../components/assets-keys';
 
-export default class Bullet extends Physics.Arcade.Sprite {
-  constructor(scene, x, y) {
-    super(scene, x, y, 'bullet');
+export default class Bullet extends GameObjects.Sprite {
+  constructor(scene) {
+    const { x } = scene.player;
+    const y = scene.player.y - 100;
+    super(scene, x, y, ASSETS_KEYS.BULLET);
+    scene.add.existing(this);
+
+    this.play(`${ASSETS_KEYS.BULLET}_anim`);
+    scene.physics.world.enableBody(this);
+    this.body.velocity.y = -250;
+
+    scene.projectiles.add(this);
   }
 
-  fire(x, y) {
-    this.body.reset(x, y);
-    this.setActive(true);
-    this.setVisible(true);
-    this.setVelocityY(-900);
-  }
-
-  preUpdate(time, delta) {
-    super.preUpdate(time, delta);
-    if (this.y <= 0) {
-      this.setActive(false);
-      this.setVisible(false);
+  update() {
+    if (this.y < 32) {
+      this.destroy();
     }
   }
 }

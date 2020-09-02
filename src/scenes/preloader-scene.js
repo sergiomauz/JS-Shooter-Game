@@ -48,7 +48,9 @@ export default class PreloaderScene extends Scene {
       frameWidth: 120,
       frameHeight: 120,
     });
+    /*
 
+    */
     this.load.audio(ASSETS_KEYS.BG_MUSIC, ['assets/music.mod']);
   }
 

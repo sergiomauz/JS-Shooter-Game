@@ -19,3 +19,27 @@ test('When a player dies 3 times, the player is defeated and game must be finish
   expect(player.getLifes()).toBe(0);
   expect(player.wasDefeated()).toBe(true);
 });
+
+test('When a player dies less than 3 times, the player is alive and game must be finished.', () => {
+  const player = new Player();
+  player.die();
+  player.die();
+  expect(player.getLifes()).toBe(1);
+  expect(player.wasDefeated()).not.toBe(true);
+});
+
+test('When a player shoots to an asteroid, the score increases depending on the asteroid type.', () => {
+  const player = new Player();
+  player.addScore(1);
+  expect(player.getScore()).toBe(10);
+  player.addScore(2);
+  expect(player.getScore()).toBe(30);
+  player.addScore(3);
+  expect(player.getScore()).toBe(60);
+  player.addScore(4);
+  expect(player.getScore()).toBe(100);
+  player.addScore(5);
+  expect(player.getScore()).toBe(150);
+  player.addScore(-2);
+  expect(player.getScore()).toBe(130);
+});

@@ -1,6 +1,16 @@
 export default class Player {
   constructor() {
     this.lifes = 3;
+    this.score = 0;
+  }
+
+  addScore(type) {
+    this.score += 10 * type;
+    return this.score;
+  }
+
+  getScore() {
+    return this.score;
   }
 
   getLifes() {
