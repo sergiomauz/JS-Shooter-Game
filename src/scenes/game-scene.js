@@ -1,81 +1,53 @@
 /* eslint-disable class-methods-use-this */
 import { Scene, Input, Math } from 'phaser';
 import BulletGroup from '../classes/bullet-group';
+import Asteroid from '../classes/asteroid';
 import CONFIG from '../components/config';
+import ASSETS_KEYS from '../components/assets-keys';
 
 export default class GameScene extends Scene {
   addBackground() {
-    this.background = this.add.tileSprite(0, 0, CONFIG.width, CONFIG.height, 'spaceBackground');
+    this.background = this.add.tileSprite(
+      0,
+      0,
+      CONFIG.width,
+      CONFIG.height,
+      ASSETS_KEYS.SPACE_BACKGROUND,
+    );
     this.background.setOrigin(0, 0);
   }
 
   destroyAsteroid(pointer, gameObject) {
-    gameObject.setTexture('explosion');
+    gameObject.setTexture(ASSETS_KEYS.EXPLOSION);
     gameObject.play('explosion_anim');
   }
 
-  addAsteroids() {
-    this.asteroid01 = this.add.sprite(Math.Between(0, CONFIG.width) - 100, 0, 'asteroid01');
-    this.asteroid02 = this.add.sprite(Math.Between(0, CONFIG.width) - 75, 0, 'asteroid02');
-    this.asteroid03 = this.add.sprite(Math.Between(0, CONFIG.width) - 50, 0, 'asteroid03');
-    this.asteroid04 = this.add.sprite(Math.Between(0, CONFIG.width) - 25, 0, 'asteroid04');
-    this.asteroid05 = this.add.sprite(Math.Between(0, CONFIG.width), 0, 'asteroid05');
+  addAsteroid(asteroid) {
+    const asteroidSprite = this.add.sprite(
+      Math.Between(0, CONFIG.width),
+      0,
+      asteroid.type(),
+    );
 
     this.anims.create({
-      key: 'asteroid01_anim',
-      frames: this.anims.generateFrameNumbers('asteroid01'),
+      key: `${asteroid.type()}_anim`,
+      frames: this.anims.generateFrameNumbers(`${asteroid.type()}`),
       frameRate: 20,
       repeat: -1,
-    });
-    this.anims.create({
-      key: 'asteroid02_anim',
-      frames: this.anims.generateFrameNumbers('asteroid02'),
-      frameRate: 20,
-      repeat: -1,
-    });
-    this.anims.create({
-      key: 'asteroid03_anim',
-      frames: this.anims.generateFrameNumbers('asteroid03'),
-      frameRate: 20,
-      repeat: -1,
-    });
-    this.anims.create({
-      key: 'asteroid04_anim',
-      frames: this.anims.generateFrameNumbers('asteroid04'),
-      frameRate: 20,
-      repeat: -1,
-    });
-    this.anims.create({
-      key: 'asteroid05_anim',
-      frames: this.anims.generateFrameNumbers('asteroid05'),
-      frameRate: 20,
-      repeat: -1,
-    });
-    this.anims.create({
-      key: 'explosion_anim',
-      frames: this.anims.generateFrameNumbers('explosion'),
-      frameRate: 20,
-      repeat: 0,
-      hideOnComplete: true,
     });
 
-    this.asteroid01.play('asteroid01_anim');
-    this.asteroid02.play('asteroid02_anim');
-    this.asteroid03.play('asteroid03_anim');
-    this.asteroid04.play('asteroid04_anim');
-    this.asteroid05.play('asteroid05_anim');
+    asteroidSprite.play(`${asteroid.type()}_anim`);
+    asteroidSprite.setInteractive();
 
-    this.asteroid01.setInteractive();
-    this.asteroid02.setInteractive();
-    this.asteroid03.setInteractive();
-    this.asteroid04.setInteractive();
-    this.asteroid05.setInteractive();
-
-    this.input.on('gameobjectdown', this.destroyAsteroid, this);
+    return asteroidSprite;
   }
 
   addShip() {
-    this.ship = this.add.sprite(CONFIG.width / 2, CONFIG.height - 60, 'ship');
+    this.ship = this.add.sprite(
+      CONFIG.width / 2,
+      CONFIG.height - 60,
+      ASSETS_KEYS.SHIP,
+    );
   }
 
   shootBullet() {
@@ -102,8 +74,19 @@ export default class GameScene extends Scene {
     this.input.on('pointermove', (pointer) => {
       this.ship.x = pointer.x;
     });
+
     this.input.on('pointerdown', () => {
       this.shootBullet();
+    });
+
+    this.input.on('gameobjectdown', this.destroyAsteroid, this);
+
+    this.anims.create({
+      key: `${ASSETS_KEYS.EXPLOSION}_anim`,
+      frames: this.anims.generateFrameNumbers(ASSETS_KEYS.EXPLOSION),
+      frameRate: 20,
+      repeat: 0,
+      hideOnComplete: true,
     });
 
     this.inputKeys = [
@@ -112,15 +95,23 @@ export default class GameScene extends Scene {
   }
 
   create() {
+    this.asteroidTypes = ['01', '02', '03', '04', '05'];
+
     this.addBackground();
-    this.addAsteroids();
+
+    this.asteroidTypes.forEach((type) => {
+      const asteroid = new Asteroid(type);
+
+      this[asteroid.type()] = this.addAsteroid(asteroid);
+
+      this.physics.add.collider(this[asteroid.type()], this.ship, () => {
+        this.destroyAsteroid();
+      });
+    });
+
     this.loadBullets();
     this.addShip();
     this.addEvents();
-
-    this.physics.add.collider(this.asteroid01, this.ship, () => {
-      this.destroyAsteroid();
-    });
   }
 
   update() {
@@ -130,11 +121,9 @@ export default class GameScene extends Scene {
       }
     });
 
-    this.moveShip(this.asteroid01, 1);
-    this.moveShip(this.asteroid02, 2);
-    this.moveShip(this.asteroid03, 3);
-    this.moveShip(this.asteroid04, 4);
-    this.moveShip(this.asteroid05, 5);
+    this.asteroidTypes.forEach((type, index) => {
+      this.moveShip(this[`${ASSETS_KEYS.ASTEROID}${type}`], index + 1);
+    });
 
     this.background.tilePositionY -= 0.5;
   }

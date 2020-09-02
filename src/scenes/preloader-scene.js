@@ -4,29 +4,55 @@ import ASSETS_KEYS from '../components/assets-keys';
 
 export default class PreloaderScene extends Scene {
   loadAssets() {
-    this.load.image(ASSETS_KEYS.SHIP, 'assets/sprites/ship.png');
-    this.load.image(ASSETS_KEYS.BULLET, 'assets/sprites/bullet.png');
-    this.load.image(ASSETS_KEYS.SPACE_BACKGROUND, 'assets/space_background.png');
-    this.load.image(ASSETS_KEYS.LOGO, 'assets/logo.png');
-    this.load.image(ASSETS_KEYS.BUTTON, 'assets/ui/red_button01.png');
-    this.load.image(ASSETS_KEYS.BUTTON_ON_HOVER, 'assets/ui/red_button02.png');
-    this.load.image(ASSETS_KEYS.UNCHECKED_BOX, 'assets/ui/red_box.png');
-    this.load.image(ASSETS_KEYS.CHECKED_BOX, 'assets/ui/red_box_checked.png');
+    this.load.spritesheet(ASSETS_KEYS.LOGO, 'assets/logo.png', {
+      frameWidth: 400,
+      frameHeight: 300,
+    });
+    this.load.spritesheet(ASSETS_KEYS.SPACE_BACKGROUND, 'assets/space_background.png', {
+      frameWidth: 800,
+      frameHeight: 600,
+    });
 
-    this.load.audio('bgMusic', ['assets/music.mod']);
+    this.load.spritesheet(ASSETS_KEYS.SHIP, 'assets/sprites/ship.png', {
+      frameWidth: 78,
+      frameHeight: 77,
+    });
+    this.load.spritesheet(ASSETS_KEYS.BULLET, 'assets/sprites/bullet.png', {
+      frameWidth: 8,
+      frameHeight: 100,
+    });
+
+    this.load.spritesheet(ASSETS_KEYS.BUTTON, 'assets/ui/red_button01.png', {
+      frameWidth: 190,
+      frameHeight: 45,
+    });
+    this.load.spritesheet(ASSETS_KEYS.BUTTON_ON_HOVER, 'assets/ui/red_button02.png', {
+      frameWidth: 190,
+      frameHeight: 49,
+    });
+    this.load.spritesheet(ASSETS_KEYS.UNCHECKED_BOX, 'assets/ui/red_box_unchecked.png', {
+      frameWidth: 38,
+      frameHeight: 36,
+    });
+    this.load.spritesheet(ASSETS_KEYS.CHECKED_BOX, 'assets/ui/red_box_checked.png', {
+      frameWidth: 38,
+      frameHeight: 36,
+    });
     ['01', '02', '03', '04', '05'].forEach((asteroid) => {
-      this.load.spritesheet('asteroid'.concat(asteroid), `assets/sprites/asteroids/${asteroid}.png`, {
+      this.load.spritesheet(ASSETS_KEYS.ASTEROID.concat(asteroid), `assets/sprites/asteroids/${asteroid}.png`, {
         frameWidth: 120,
         frameHeight: 120,
       });
     });
-    this.load.spritesheet('explosion', 'assets/sprites/asteroids/explosion.png', {
+    this.load.spritesheet(ASSETS_KEYS.EXPLOSION, 'assets/sprites/asteroids/explosion.png', {
       frameWidth: 120,
       frameHeight: 120,
     });
+
+    this.load.audio(ASSETS_KEYS.BG_MUSIC, ['assets/music.mod']);
   }
 
-  preload() {
+  addProgressBar() {
     // display progress bar
     const progressBar = this.add.graphics();
     const progressBox = this.add.graphics();
@@ -90,10 +116,11 @@ export default class PreloaderScene extends Scene {
       assetText.destroy();
       this.ready();
     });
+  }
 
+  preload() {
+    this.addProgressBar();
     this.timedEvent = this.time.delayedCall(3000, this.ready, [], this);
-
-    // load assets
     this.loadAssets();
   }
 
