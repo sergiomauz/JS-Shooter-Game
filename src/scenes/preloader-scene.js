@@ -1,6 +1,8 @@
 import { Scene } from 'phaser';
 import SCENE_KEYS from '../components/scene-keys';
 import ASSETS_KEYS from '../components/assets-keys';
+import PixelFontImage from '../assets/fonts/pixelFont.png';
+import PixelFontXML from '../assets/fonts/pixelFont.xml';
 
 export default class PreloaderScene extends Scene {
   loadAssets() {
@@ -15,7 +17,7 @@ export default class PreloaderScene extends Scene {
 
     this.load.spritesheet(ASSETS_KEYS.SHIP, 'assets/sprites/ship.png', {
       frameWidth: 78,
-      frameHeight: 77,
+      frameHeight: 70,
     });
     this.load.spritesheet(ASSETS_KEYS.BULLET, 'assets/sprites/bullet.png', {
       frameWidth: 8,
@@ -40,17 +42,17 @@ export default class PreloaderScene extends Scene {
     });
     ['01', '02', '03', '04', '05'].forEach((asteroid) => {
       this.load.spritesheet(ASSETS_KEYS.ASTEROID.concat(asteroid), `assets/sprites/asteroids/${asteroid}.png`, {
-        frameWidth: 120,
-        frameHeight: 120,
+        frameWidth: 60,
+        frameHeight: 60,
       });
     });
     this.load.spritesheet(ASSETS_KEYS.EXPLOSION, 'assets/sprites/asteroids/explosion.png', {
       frameWidth: 120,
       frameHeight: 120,
     });
-    /*
 
-    */
+    this.load.bitmapFont(ASSETS_KEYS.PIXEL_FONT, PixelFontImage, PixelFontXML);
+
     this.load.audio(ASSETS_KEYS.BG_MUSIC, ['assets/music.mod']);
   }
 

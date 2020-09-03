@@ -2,10 +2,19 @@
 import { Scene, Input, Math } from 'phaser';
 import Bullet from '../classes/bullet';
 import Asteroid from '../classes/asteroid';
+import Explosion from '../classes/explosion';
 import CONFIG from '../components/config';
 import ASSETS_KEYS from '../components/assets-keys';
 
 export default class GameScene extends Scene {
+  zeroPad(number, size) {
+    let stringNumber = String(number);
+    while (stringNumber.length < (size || 2)) {
+      stringNumber = '0'.concat(stringNumber);
+    }
+    return stringNumber;
+  }
+
   addBackground() {
     this.background = this.add.tileSprite(
       0,
@@ -30,14 +39,6 @@ export default class GameScene extends Scene {
     );
 
     this.enemies.add(asteroidSprite);
-
-    this.anims.create({
-      key: `${asteroid.type()}_anim`,
-      frames: this.anims.generateFrameNumbers(`${asteroid.type()}`),
-      frameRate: 20,
-      repeat: -1,
-    });
-    asteroidSprite.play(`${asteroid.type()}_anim`);
 
     asteroidSprite.setInteractive();
 
@@ -91,19 +92,47 @@ export default class GameScene extends Scene {
   hitEnemy(projectile, enemy) {
     projectile.destroy();
     this.destroyObject(enemy);
+
+    this.score += 15;
+    const scoreFormated = this.zeroPad(this.score, 6);
+    this.scoreLabel.text = `SCORE ${scoreFormated}`;
   }
 
-  hurtPlayer(enemy) {
-    this.destroyObject(this.player);
-    this.destroyObject(enemy);
-
+  hurtPlayer(currentPlayer, enemy) {
     this.resetShipPosition(enemy);
 
+    if (this.player.alpha < 1) {
+      return;
+    }
 
-    this.addShip();
+    const explosion = new Explosion(this, currentPlayer.x, currentPlayer.y);
+    currentPlayer.disableBody(true, true);
+    this.time.addEvent({
+      delay: 1000,
+      callback: this.resetPlayer,
+      callbackScope: this,
+      loop: false,
+    });
+  }
 
-    this.player.x = CONFIG.width / 2;
-    this.player.y = CONFIG.height;
+  resetPlayer() {
+    // 3.2 enable the player again
+    const x = CONFIG.width / 2 - 8;
+    const y = CONFIG.height + 64;
+    this.player.enableBody(true, x, y, true, true);
+
+    this.player.alpha = 0.5;
+    const tween = this.tweens.add({
+      targets: this.player,
+      y: CONFIG.height - 64,
+      ease: 'Power1',
+      duration: 1500,
+      repeat: 0,
+      onComplete() {
+        this.player.alpha = 1;
+      },
+      callbackScope: this,
+    });
   }
 
   create() {
@@ -128,8 +157,22 @@ export default class GameScene extends Scene {
     this.projectiles = this.add.group();
 
     this.physics.add.overlap(this.player, this.enemies, this.hurtPlayer, null, this);
-
     this.physics.add.overlap(this.projectiles, this.enemies, this.hitEnemy, null, this);
+
+    const graphics = this.add.graphics();
+    graphics.fillStyle(0x000000, 1);
+    graphics.beginPath();
+    graphics.moveTo(0, 0);
+    graphics.lineTo(CONFIG.width, 0);
+    graphics.lineTo(CONFIG.width, 20);
+    graphics.lineTo(0, 20);
+    graphics.lineTo(0, 0);
+    graphics.closePath();
+    graphics.fillPath();
+    this.score = 0;
+
+    const scoreFormated = this.zeroPad(this.score, 6);
+    this.scoreLabel = this.add.bitmapText(10, 5, ASSETS_KEYS.PIXEL_FONT, `SCORE ${scoreFormated}`, 16);
 
     this.anims.create({
       key: `${ASSETS_KEYS.EXPLOSION}_anim`,
@@ -159,7 +202,9 @@ export default class GameScene extends Scene {
     this.moveShip();
 
     if (Input.Keyboard.JustDown(this.spacebar)) {
-      this.shootBullet();
+      if (this.player.active) {
+        this.shootBullet();
+      }
     }
 
     (this.projectiles.getChildren() || []).forEach((bullet) => {

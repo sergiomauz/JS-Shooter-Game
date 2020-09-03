@@ -10,6 +10,7 @@ const ASSETS_KEYS = {
   ASTEROID: 'asteroid',
   EXPLOSION: 'explosion',
   BG_MUSIC: 'bgMusic',
+  PIXEL_FONT: 'pixelFont',
 };
 
 export default ASSETS_KEYS;
