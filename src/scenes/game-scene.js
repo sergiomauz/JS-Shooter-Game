@@ -90,8 +90,9 @@ export default class GameScene extends Scene {
   }
 
   hitEnemy(projectile, enemy) {
+    const explosion = new Explosion(this, enemy.x, enemy.y);
     projectile.destroy();
-    this.destroyObject(enemy);
+    this.resetShipPosition(enemy);
 
     this.score += 15;
     const scoreFormated = this.zeroPad(this.score, 6);
@@ -116,13 +117,12 @@ export default class GameScene extends Scene {
   }
 
   resetPlayer() {
-    // 3.2 enable the player again
-    const x = CONFIG.width / 2 - 8;
-    const y = CONFIG.height + 64;
+    const x = CONFIG.width / 2;
+    const y = CONFIG.height;
     this.player.enableBody(true, x, y, true, true);
 
     this.player.alpha = 0.5;
-    const tween = this.tweens.add({
+    this.tweens.add({
       targets: this.player,
       y: CONFIG.height - 64,
       ease: 'Power1',
@@ -159,16 +159,6 @@ export default class GameScene extends Scene {
     this.physics.add.overlap(this.player, this.enemies, this.hurtPlayer, null, this);
     this.physics.add.overlap(this.projectiles, this.enemies, this.hitEnemy, null, this);
 
-    const graphics = this.add.graphics();
-    graphics.fillStyle(0x000000, 1);
-    graphics.beginPath();
-    graphics.moveTo(0, 0);
-    graphics.lineTo(CONFIG.width, 0);
-    graphics.lineTo(CONFIG.width, 20);
-    graphics.lineTo(0, 20);
-    graphics.lineTo(0, 0);
-    graphics.closePath();
-    graphics.fillPath();
     this.score = 0;
 
     const scoreFormated = this.zeroPad(this.score, 6);
