@@ -2,7 +2,6 @@
 import { Scene, Input, Math } from 'phaser';
 import Asteroid from '../components/asteroid';
 import BattleCruiser from '../components/battlecruiser';
-import Explosion from '../components/explosion';
 import CONFIG from '../config';
 import ASSETS_KEYS from '../keys/assets-keys';
 
@@ -50,60 +49,20 @@ export default class GameScene extends Scene {
     this.asteroids.add(this[`${ASSETS_KEYS.ASTEROID}${type}`]);
   }
 
-  hitEnemy(projectile, enemy) {
-    this.newExplosion = new Explosion(this, enemy.x, enemy.y);
-    projectile.destroy();
-    enemy.reset();
-
-    /*
-    this.score += 15;
-    const scoreFormated = this.zeroPad(this.score, 6);
-    this.scoreLabel.text = `SCORE ${scoreFormated}`;
-    */
-  }
-
-  hurtPlayer(currentPlayer, enemy) {
-    enemy.reset();
-    if (this.battlecruiser.alpha < 1) {
-      return;
-    }
-
-    this.newExplosion = new Explosion(this, currentPlayer.x, currentPlayer.y);
-    currentPlayer.disableBody(true, true);
-    this.time.addEvent({
-      delay: 1000,
-      callback: this.resetPlayer,
-      callbackScope: this,
-      loop: false,
-    });
-  }
-
-  resetPlayer() {
-    const x = CONFIG.width / 2;
-    const y = CONFIG.height;
-    this.battlecruiser.enableBody(true, x, y, true, true);
-
-    this.battlecruiser.alpha = 0.5;
-    this.tweens.add({
-      targets: this.battlecruiser,
-      y: CONFIG.height - 64,
-      ease: 'Power1',
-      duration: 1500,
-      repeat: 0,
-      onComplete() {
-        this.battlecruiser.alpha = 1;
-      },
-      callbackScope: this,
-    });
-  }
-
   addEvents() {
     this.physics.world.setBoundsCollision();
 
-    // this.physics.add.overlap(this.battlecruiser, this.asteroids, this.hurtPlayer, null, this);
-    this.physics.add.overlap(this.battlecruiser, this.asteroids, this.battlecruiser.hurt, null, this);
-    // this.physics.add.overlap(this.projectiles, this.asteroids, this.hitEnemy, null, this);
-    this.physics.add.overlap(this.projectiles, this.asteroids, this.projectiles.hit, null, this);
+    this.physics.add.overlap(this.battlecruiser,
+      this.asteroids,
+      this.battlecruiser.hurt,
+      null,
+      this);
+
+    this.physics.add.overlap(this.projectiles,
+      this.asteroids,
+      this.battlecruiser.hitEnemy,
+      null,
+      this.battlecruiser);
   }
 
   preload() {

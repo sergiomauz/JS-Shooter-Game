@@ -76,4 +76,10 @@ export default class BattleCruiser extends Physics.Arcade.Sprite {
       loop: false,
     });
   }
+
+  hitEnemy(projectile, enemy) {
+    this.newExplosion = new Explosion(this.scene, enemy.x, enemy.y);
+    projectile.destroy();
+    enemy.reset();
+  }
 }
