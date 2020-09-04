@@ -1,6 +1,5 @@
 /* eslint-disable class-methods-use-this */
 import { Scene, Input, Math } from 'phaser';
-import Beam from '../components/beam';
 import Asteroid from '../components/asteroid';
 import BattleCruiser from '../components/battlecruiser';
 import Explosion from '../components/explosion';
@@ -14,6 +13,13 @@ export default class GameScene extends Scene {
       stringNumber = '0'.concat(stringNumber);
     }
     return stringNumber;
+  }
+
+  addScoreBoard() {
+    this.score = 0;
+
+    const scoreFormated = this.zeroPad(this.score, 6);
+    this.scoreLabel = this.add.bitmapText(10, 5, ASSETS_KEYS.PIXEL_FONT, `SCORE ${scoreFormated}`, 16);
   }
 
   addBackground() {
@@ -44,36 +50,20 @@ export default class GameScene extends Scene {
     this.asteroids.add(this[`${ASSETS_KEYS.ASTEROID}${type}`]);
   }
 
-  destroyObject(gameObject) {
-    gameObject.setTexture(ASSETS_KEYS.EXPLOSION);
-    gameObject.play(`${ASSETS_KEYS.EXPLOSION}_anim`);
-  }
-
-  resetAsteroidPosition(shipMoved) {
-    shipMoved.y = 0;
-    shipMoved.x = Math.Between(25, CONFIG.width - 25);
-  }
-
-  moveAsteroid(asteroidMoved, speedMovement) {
-    asteroidMoved.y += speedMovement;
-    if (asteroidMoved.y > CONFIG.height) {
-      this.resetAsteroidPosition(asteroidMoved);
-    }
-  }
-
   hitEnemy(projectile, enemy) {
     this.newExplosion = new Explosion(this, enemy.x, enemy.y);
     projectile.destroy();
-    this.resetAsteroidPosition(enemy);
+    enemy.reset();
 
+    /*
     this.score += 15;
     const scoreFormated = this.zeroPad(this.score, 6);
     this.scoreLabel.text = `SCORE ${scoreFormated}`;
+    */
   }
 
   hurtPlayer(currentPlayer, enemy) {
-    // this.resetAsteroidPosition(enemy);
-
+    enemy.reset();
     if (this.battlecruiser.alpha < 1) {
       return;
     }
@@ -107,20 +97,13 @@ export default class GameScene extends Scene {
     });
   }
 
-  addScoreBoard() {
-    this.score = 0;
-
-    const scoreFormated = this.zeroPad(this.score, 6);
-    this.scoreLabel = this.add.bitmapText(10, 5, ASSETS_KEYS.PIXEL_FONT, `SCORE ${scoreFormated}`, 16);
-  }
-
   addEvents() {
-    this.input.on('gameobjectdown', this.destroyObject, this);
     this.physics.world.setBoundsCollision();
 
-    this.physics.add.overlap(this.battlecruiser, this.asteroids, this.hurtPlayer, null, this);
-    // this.physics.add.overlap(this.battlecruiser, this.asteroids, this.battlecruiser.hurt, null, this);
-    this.physics.add.overlap(this.projectiles, this.asteroids, this.hitEnemy, null, this);
+    // this.physics.add.overlap(this.battlecruiser, this.asteroids, this.hurtPlayer, null, this);
+    this.physics.add.overlap(this.battlecruiser, this.asteroids, this.battlecruiser.hurt, null, this);
+    // this.physics.add.overlap(this.projectiles, this.asteroids, this.hitEnemy, null, this);
+    this.physics.add.overlap(this.projectiles, this.asteroids, this.projectiles.hit, null, this);
   }
 
   preload() {
@@ -148,7 +131,7 @@ export default class GameScene extends Scene {
     this.background.tilePositionY -= 0.5;
 
     this.asteroidTypes.forEach((type, index) => {
-      this.moveAsteroid(this[`${ASSETS_KEYS.ASTEROID}${type}`], index + 1);
+      this[`${ASSETS_KEYS.ASTEROID}${type}`].move(index + 1);
     });
 
     this.battlecruiser.move(this.cursorKeys);

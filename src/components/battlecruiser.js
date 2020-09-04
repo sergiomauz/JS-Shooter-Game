@@ -44,6 +44,7 @@ export default class BattleCruiser extends Physics.Arcade.Sprite {
   reset() {
     const x = CONFIG.width / 2;
     const y = CONFIG.height;
+
     this.enableBody(true, x, y, true, true);
 
     this.alpha = 0.5;
@@ -56,13 +57,13 @@ export default class BattleCruiser extends Physics.Arcade.Sprite {
       onComplete() {
         this.alpha = 1;
       },
-      callbackScope: this.scene,
+      callbackScope: this,
     });
   }
 
   hurt(currentPlayer, enemy) {
-    // this.resetAsteroidPosition(enemy)
-    if (this.alpha < 1) {
+    enemy.reset();
+    if (currentPlayer.alpha < 1) {
       return;
     }
 
@@ -71,7 +72,7 @@ export default class BattleCruiser extends Physics.Arcade.Sprite {
     currentPlayer.scene.time.addEvent({
       delay: 1000,
       callback: currentPlayer.reset,
-      callbackScope: currentPlayer.scene,
+      callbackScope: currentPlayer,
       loop: false,
     });
   }

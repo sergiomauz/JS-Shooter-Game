@@ -1,4 +1,4 @@
-import { Physics } from 'phaser';
+import { Physics, Math } from 'phaser';
 import CONFIG from '../config';
 import ASSETS_KEYS from '../keys/assets-keys';
 
@@ -20,14 +20,12 @@ export default class Asteroid extends Physics.Arcade.Sprite {
     this.x = Math.Between(25, CONFIG.width - 25);
   }
 
-  move(asteroidMoved, speedMovement) {
+  move(speedMovement) {
     this.y += speedMovement;
     if (this.y > CONFIG.height) {
       this.reset();
     }
   }
-
-
 
   type() {
     return `${ASSETS_KEYS.ASTEROID}${this.typeOf}`;
