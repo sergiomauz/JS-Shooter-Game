@@ -15,11 +15,11 @@ export default class PreloaderScene extends Scene {
       frameHeight: 600,
     });
 
-    this.load.spritesheet(ASSETS_KEYS.SHIP, 'assets/sprites/ship.png', {
+    this.load.spritesheet(ASSETS_KEYS.BATTLE_CRUISER, 'assets/sprites/ship.png', {
       frameWidth: 78,
       frameHeight: 70,
     });
-    this.load.spritesheet(ASSETS_KEYS.BULLET, 'assets/sprites/bullet.png', {
+    this.load.spritesheet(ASSETS_KEYS.BEAM, 'assets/sprites/beam.png', {
       frameWidth: 8,
       frameHeight: 100,
     });

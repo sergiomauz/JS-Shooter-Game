@@ -1,6 +1,6 @@
 /* eslint-disable class-methods-use-this */
 import { Scene, Input, Math } from 'phaser';
-import Bullet from '../components/bullet';
+import Beam from '../components/beam';
 import Asteroid from '../components/asteroid';
 import Explosion from '../components/explosion';
 import CONFIG from '../config';
@@ -45,14 +45,14 @@ export default class GameScene extends Scene {
     return asteroidSprite;
   }
 
-  addShip() {
-    this.player = this.physics.add.sprite(
+  addBattleCruiser() {
+    this.battlecruiser = this.physics.add.sprite(
       CONFIG.width / 2,
       CONFIG.height - 40,
-      ASSETS_KEYS.SHIP,
+      ASSETS_KEYS.BATTLE_CRUISER,
     );
 
-    this.player.setCollideWorldBounds(true);
+    this.battlecruiser.setCollideWorldBounds(true);
 
     this.projectiles = this.add.group();
   }
@@ -63,25 +63,25 @@ export default class GameScene extends Scene {
   }
 
   moveShip() {
-    this.player.setVelocity(0);
+    this.battlecruiser.setVelocity(0);
 
     if (this.cursorKeys.left.isDown) {
-      this.player.setVelocityX(-600);
+      this.battlecruiser.setVelocityX(-600);
     } else if (this.cursorKeys.right.isDown) {
-      this.player.setVelocityX(600);
+      this.battlecruiser.setVelocityX(600);
     }
 
     if (this.cursorKeys.up.isDown) {
-      this.player.setVelocityY(-600);
+      this.battlecruiser.setVelocityY(-600);
     } else if (this.cursorKeys.down.isDown) {
-      this.player.setVelocityY(600);
+      this.battlecruiser.setVelocityY(600);
     }
   }
 
-  shootBullet() {
+  shootBeam() {
     if (Input.Keyboard.JustDown(this.spacebar)) {
-      if (this.player.active) {
-        this.newBullet = new Bullet(this);
+      if (this.battlecruiser.active) {
+        this.newBeam = new Beam(this);
       }
     }
   }
@@ -107,7 +107,7 @@ export default class GameScene extends Scene {
   hurtPlayer(currentPlayer, enemy) {
     this.resetShipPosition(enemy);
 
-    if (this.player.alpha < 1) {
+    if (this.battlecruiser.alpha < 1) {
       return;
     }
 
@@ -124,17 +124,17 @@ export default class GameScene extends Scene {
   resetPlayer() {
     const x = CONFIG.width / 2;
     const y = CONFIG.height;
-    this.player.enableBody(true, x, y, true, true);
+    this.battlecruiser.enableBody(true, x, y, true, true);
 
-    this.player.alpha = 0.5;
+    this.battlecruiser.alpha = 0.5;
     this.tweens.add({
-      targets: this.player,
+      targets: this.battlecruiser,
       y: CONFIG.height - 64,
       ease: 'Power1',
       duration: 1500,
       repeat: 0,
       onComplete() {
-        this.player.alpha = 1;
+        this.battlecruiser.alpha = 1;
       },
       callbackScope: this,
     });
@@ -162,14 +162,14 @@ export default class GameScene extends Scene {
 
     this.physics.world.setBoundsCollision();
 
-    this.physics.add.overlap(this.player, this.enemies, this.hurtPlayer, null, this);
+    this.physics.add.overlap(this.battlecruiser, this.enemies, this.hurtPlayer, null, this);
     this.physics.add.overlap(this.projectiles, this.enemies, this.hitEnemy, null, this);
   }
 
   create() {
     this.addBackground();
     this.addEnemies();
-    this.addShip();
+    this.addBattleCruiser();
 
     this.cursorKeys = this.input.keyboard.createCursorKeys();
     this.spacebar = this.input.keyboard.addKey(Input.Keyboard.KeyCodes.SPACE);
@@ -183,8 +183,8 @@ export default class GameScene extends Scene {
     });
 
     this.anims.create({
-      key: `${ASSETS_KEYS.BULLET}_anim`,
-      frames: this.anims.generateFrameNumbers(ASSETS_KEYS.BULLET),
+      key: `${ASSETS_KEYS.BEAM}_anim`,
+      frames: this.anims.generateFrameNumbers(ASSETS_KEYS.BEAM),
       frameRate: 20,
       repeat: -1,
     });
@@ -202,10 +202,10 @@ export default class GameScene extends Scene {
     });
 
     this.moveShip();
-    this.shootBullet();
+    this.shootBeam();
 
-    (this.projectiles.getChildren() || []).forEach((bullet) => {
-      bullet.update();
+    (this.projectiles.getChildren() || []).forEach((beam) => {
+      beam.update();
     });
   }
 }

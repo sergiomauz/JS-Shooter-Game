@@ -1,6 +1,6 @@
 const ASSETS_KEYS = {
-  SHIP: 'ship',
-  BULLET: 'bullet',
+  BATTLE_CRUISER: 'battlecruiser',
+  BEAM: 'beam',
   SPACE_BACKGROUND: 'spaceBackground',
   LOGO: 'phaserLogo',
   BUTTON: 'button',
