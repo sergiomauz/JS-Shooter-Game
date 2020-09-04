@@ -1,6 +1,6 @@
 import { Game } from 'phaser';
-import CONFIG from './components/config';
-import SCENE_KEYS from './components/scene-keys';
+import CONFIG from './config';
+import SCENE_KEYS from './keys/scene-keys';
 import GameScene from './scenes/game-scene';
 import PreloaderScene from './scenes/preloader-scene';
 import TitleScene from './scenes/title-scene';

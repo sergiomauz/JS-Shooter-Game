@@ -3,8 +3,8 @@ import { Scene, Input, Math } from 'phaser';
 import Bullet from '../classes/bullet';
 import Asteroid from '../classes/asteroid';
 import Explosion from '../classes/explosion';
-import CONFIG from '../components/config';
-import ASSETS_KEYS from '../components/assets-keys';
+import CONFIG from '../config';
+import ASSETS_KEYS from '../keys/assets-keys';
 
 export default class GameScene extends Scene {
   zeroPad(number, size) {
@@ -51,10 +51,10 @@ export default class GameScene extends Scene {
       CONFIG.height - 40,
       ASSETS_KEYS.SHIP,
     );
-  }
 
-  shootBullet() {
-    const bullet = new Bullet(this);
+    this.player.setCollideWorldBounds(true);
+
+    this.projectiles = this.add.group();
   }
 
   resetShipPosition(shipMoved) {
@@ -78,6 +78,15 @@ export default class GameScene extends Scene {
     }
   }
 
+  shootBullet() {
+    if (Input.Keyboard.JustDown(this.spacebar)) {
+      if (this.player.active) {
+        this.newBullet = new Bullet(this);
+      }
+    }
+  }
+
+
   moveAsteroid(shipMoved, speedMovement) {
     shipMoved.y += speedMovement;
     if (shipMoved.y > CONFIG.height) {
@@ -85,12 +94,8 @@ export default class GameScene extends Scene {
     }
   }
 
-  addEvents() {
-
-  }
-
   hitEnemy(projectile, enemy) {
-    const explosion = new Explosion(this, enemy.x, enemy.y);
+    this.newExplosion = new Explosion(this, enemy.x, enemy.y);
     projectile.destroy();
     this.resetShipPosition(enemy);
 
@@ -106,7 +111,7 @@ export default class GameScene extends Scene {
       return;
     }
 
-    const explosion = new Explosion(this, currentPlayer.x, currentPlayer.y);
+    this.newExplosion = new Explosion(this, currentPlayer.x, currentPlayer.y);
     currentPlayer.disableBody(true, true);
     this.time.addEvent({
       delay: 1000,
@@ -135,34 +140,39 @@ export default class GameScene extends Scene {
     });
   }
 
-  create() {
-    this.asteroidTypes = ['01', '02', '03', '04', '05'];
+  addScoreBoard() {
+    this.score = 0;
 
-    this.addBackground();
+    const scoreFormated = this.zeroPad(this.score, 6);
+    this.scoreLabel = this.add.bitmapText(10, 5, ASSETS_KEYS.PIXEL_FONT, `SCORE ${scoreFormated}`, 16);
+  }
+
+  addEnemies() {
+    this.asteroidTypes = ['01', '02', '03', '04', '05'];
 
     this.enemies = this.physics.add.group();
     this.asteroidTypes.forEach((type) => {
       const asteroid = new Asteroid(type);
       this[asteroid.type()] = this.addAsteroid(asteroid);
     });
+  }
 
+  addEvents() {
     this.input.on('gameobjectdown', this.destroyObject, this);
 
     this.physics.world.setBoundsCollision();
 
-    this.addShip();
-    this.cursorKeys = this.input.keyboard.createCursorKeys();
-    this.player.setCollideWorldBounds(true);
-    this.spacebar = this.input.keyboard.addKey(Input.Keyboard.KeyCodes.SPACE);
-    this.projectiles = this.add.group();
-
     this.physics.add.overlap(this.player, this.enemies, this.hurtPlayer, null, this);
     this.physics.add.overlap(this.projectiles, this.enemies, this.hitEnemy, null, this);
+  }
 
-    this.score = 0;
+  create() {
+    this.addBackground();
+    this.addEnemies();
+    this.addShip();
 
-    const scoreFormated = this.zeroPad(this.score, 6);
-    this.scoreLabel = this.add.bitmapText(10, 5, ASSETS_KEYS.PIXEL_FONT, `SCORE ${scoreFormated}`, 16);
+    this.cursorKeys = this.input.keyboard.createCursorKeys();
+    this.spacebar = this.input.keyboard.addKey(Input.Keyboard.KeyCodes.SPACE);
 
     this.anims.create({
       key: `${ASSETS_KEYS.EXPLOSION}_anim`,
@@ -179,23 +189,20 @@ export default class GameScene extends Scene {
       repeat: -1,
     });
 
+    this.addScoreBoard();
+
     this.addEvents();
   }
 
   update() {
+    this.background.tilePositionY -= 0.5;
+
     this.asteroidTypes.forEach((type, index) => {
       this.moveAsteroid(this[`${ASSETS_KEYS.ASTEROID}${type}`], index + 1);
     });
 
-    this.background.tilePositionY -= 0.5;
-
     this.moveShip();
-
-    if (Input.Keyboard.JustDown(this.spacebar)) {
-      if (this.player.active) {
-        this.shootBullet();
-      }
-    }
+    this.shootBullet();
 
     (this.projectiles.getChildren() || []).forEach((bullet) => {
       bullet.update();

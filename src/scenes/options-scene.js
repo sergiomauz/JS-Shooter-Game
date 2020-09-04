@@ -1,6 +1,6 @@
 import { Scene, Display } from 'phaser';
-import SCENE_KEYS from '../components/scene-keys';
-import ASSETS_KEYS from '../components/assets-keys';
+import SCENE_KEYS from '../keys/scene-keys';
+import ASSETS_KEYS from '../keys/assets-keys';
 
 export default class OptionsScene extends Scene {
   updateAudio() {

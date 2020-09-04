@@ -1,5 +1,5 @@
 import { GameObjects } from 'phaser';
-import ASSETS_KEYS from '../components/assets-keys';
+import ASSETS_KEYS from '../keys/assets-keys';
 
 export default class Explosion extends GameObjects.Sprite {
   constructor(scene, x, y) {

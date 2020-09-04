@@ -1,6 +1,6 @@
 import { Scene, Display } from 'phaser';
-import SCENE_KEYS from '../components/scene-keys';
-import CONFIG from '../components/config';
+import SCENE_KEYS from '../keys/scene-keys';
+import CONFIG from '../config';
 
 export default class CreditsScene extends Scene {
   create() {

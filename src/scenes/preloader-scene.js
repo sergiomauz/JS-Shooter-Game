@@ -1,6 +1,6 @@
 import { Scene } from 'phaser';
-import SCENE_KEYS from '../components/scene-keys';
-import ASSETS_KEYS from '../components/assets-keys';
+import SCENE_KEYS from '../keys/scene-keys';
+import ASSETS_KEYS from '../keys/assets-keys';
 import PixelFontImage from '../assets/fonts/pixelFont.png';
 import PixelFontXML from '../assets/fonts/pixelFont.xml';
 

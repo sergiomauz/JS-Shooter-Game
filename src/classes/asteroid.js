@@ -1,4 +1,4 @@
-import ASSETS_KEYS from '../components/assets-keys';
+import ASSETS_KEYS from '../keys/assets-keys';
 
 export default class Asteroid {
   constructor(type) {
