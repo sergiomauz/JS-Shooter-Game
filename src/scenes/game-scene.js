@@ -1,8 +1,8 @@
 /* eslint-disable class-methods-use-this */
 import { Scene, Input, Math } from 'phaser';
-import Bullet from '../classes/bullet';
-import Asteroid from '../classes/asteroid';
-import Explosion from '../classes/explosion';
+import Bullet from '../components/bullet';
+import Asteroid from '../components/asteroid';
+import Explosion from '../components/explosion';
 import CONFIG from '../config';
 import ASSETS_KEYS from '../keys/assets-keys';
 
