@@ -2,6 +2,7 @@
 import { Scene, Input, Math } from 'phaser';
 import Beam from '../components/beam';
 import Asteroid from '../components/asteroid';
+import BattleCruiser from '../components/battlecruiser';
 import Explosion from '../components/explosion';
 import CONFIG from '../config';
 import ASSETS_KEYS from '../keys/assets-keys';
@@ -46,18 +47,14 @@ export default class GameScene extends Scene {
   }
 
   addBattleCruiser() {
-    this.battlecruiser = this.physics.add.sprite(
+    this.battlecruiser = new BattleCruiser(this,
       CONFIG.width / 2,
-      CONFIG.height - 40,
-      ASSETS_KEYS.BATTLE_CRUISER,
-    );
-
-    this.battlecruiser.setCollideWorldBounds(true);
+      CONFIG.height - 40);
 
     this.projectiles = this.add.group();
   }
 
-  resetShipPosition(shipMoved) {
+  resetAsteroidPosition(shipMoved) {
     shipMoved.y = 0;
     shipMoved.x = Math.Between(25, CONFIG.width - 25);
   }
@@ -86,18 +83,17 @@ export default class GameScene extends Scene {
     }
   }
 
-
-  moveAsteroid(shipMoved, speedMovement) {
-    shipMoved.y += speedMovement;
-    if (shipMoved.y > CONFIG.height) {
-      this.resetShipPosition(shipMoved);
+  moveAsteroid(asteroidMoved, speedMovement) {
+    asteroidMoved.y += speedMovement;
+    if (asteroidMoved.y > CONFIG.height) {
+      this.resetAsteroidPosition(asteroidMoved);
     }
   }
 
   hitEnemy(projectile, enemy) {
     this.newExplosion = new Explosion(this, enemy.x, enemy.y);
     projectile.destroy();
-    this.resetShipPosition(enemy);
+    this.resetAsteroidPosition(enemy);
 
     this.score += 15;
     const scoreFormated = this.zeroPad(this.score, 6);
@@ -105,7 +101,7 @@ export default class GameScene extends Scene {
   }
 
   hurtPlayer(currentPlayer, enemy) {
-    this.resetShipPosition(enemy);
+    // this.resetAsteroidPosition(enemy);
 
     if (this.battlecruiser.alpha < 1) {
       return;
@@ -162,7 +158,7 @@ export default class GameScene extends Scene {
 
     this.physics.world.setBoundsCollision();
 
-    this.physics.add.overlap(this.battlecruiser, this.enemies, this.hurtPlayer, null, this);
+    this.physics.add.overlap(this.battlecruiser, this.enemies, this.battlecruiser.hurt, null, this);
     this.physics.add.overlap(this.projectiles, this.enemies, this.hitEnemy, null, this);
   }
 

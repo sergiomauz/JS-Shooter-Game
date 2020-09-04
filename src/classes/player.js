@@ -1,7 +1,8 @@
 export default class Player {
-  constructor() {
+  constructor(name) {
     this.lifes = 3;
     this.score = 0;
+    this.name = name;
   }
 
   addScore(type) {
