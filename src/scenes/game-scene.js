@@ -27,6 +27,14 @@ export default class GameScene extends Scene {
     this.background.setOrigin(0, 0);
   }
 
+  addBattleCruiser() {
+    this.battlecruiser = new BattleCruiser(this,
+      CONFIG.width / 2,
+      CONFIG.height - 40);
+
+    this.projectiles = this.add.group();
+  }
+
   destroyObject(gameObject) {
     gameObject.setTexture(ASSETS_KEYS.EXPLOSION);
     gameObject.play(`${ASSETS_KEYS.EXPLOSION}_anim`);
@@ -39,48 +47,16 @@ export default class GameScene extends Scene {
       asteroid.type(),
     );
 
-    this.enemies.add(asteroidSprite);
+    this.asteroids.add(asteroidSprite);
 
     asteroidSprite.setInteractive();
 
     return asteroidSprite;
   }
 
-  addBattleCruiser() {
-    this.battlecruiser = new BattleCruiser(this,
-      CONFIG.width / 2,
-      CONFIG.height - 40);
-
-    this.projectiles = this.add.group();
-  }
-
   resetAsteroidPosition(shipMoved) {
     shipMoved.y = 0;
     shipMoved.x = Math.Between(25, CONFIG.width - 25);
-  }
-
-  moveShip() {
-    this.battlecruiser.setVelocity(0);
-
-    if (this.cursorKeys.left.isDown) {
-      this.battlecruiser.setVelocityX(-600);
-    } else if (this.cursorKeys.right.isDown) {
-      this.battlecruiser.setVelocityX(600);
-    }
-
-    if (this.cursorKeys.up.isDown) {
-      this.battlecruiser.setVelocityY(-600);
-    } else if (this.cursorKeys.down.isDown) {
-      this.battlecruiser.setVelocityY(600);
-    }
-  }
-
-  shootBeam() {
-    if (Input.Keyboard.JustDown(this.spacebar)) {
-      if (this.battlecruiser.active) {
-        this.newBeam = new Beam(this);
-      }
-    }
   }
 
   moveAsteroid(asteroidMoved, speedMovement) {
@@ -146,7 +122,7 @@ export default class GameScene extends Scene {
   addEnemies() {
     this.asteroidTypes = ['01', '02', '03', '04', '05'];
 
-    this.enemies = this.physics.add.group();
+    this.asteroids = this.physics.add.group();
     this.asteroidTypes.forEach((type) => {
       const asteroid = new Asteroid(type);
       this[asteroid.type()] = this.addAsteroid(asteroid);
@@ -155,20 +131,22 @@ export default class GameScene extends Scene {
 
   addEvents() {
     this.input.on('gameobjectdown', this.destroyObject, this);
-
     this.physics.world.setBoundsCollision();
 
-    this.physics.add.overlap(this.battlecruiser, this.enemies, this.battlecruiser.hurt, null, this);
-    this.physics.add.overlap(this.projectiles, this.enemies, this.hitEnemy, null, this);
+    this.physics.add.overlap(this.battlecruiser, this.asteroids, this.hurtPlayer, null, this);
+    // this.physics.add.overlap(this.battlecruiser, this.asteroids, this.battlecruiser.hurt, null, this);
+    this.physics.add.overlap(this.projectiles, this.asteroids, this.hitEnemy, null, this);
+  }
+
+  preload() {
+    this.cursorKeys = this.input.keyboard.createCursorKeys();
+    this.spacebar = this.input.keyboard.addKey(Input.Keyboard.KeyCodes.SPACE);
   }
 
   create() {
     this.addBackground();
     this.addEnemies();
     this.addBattleCruiser();
-
-    this.cursorKeys = this.input.keyboard.createCursorKeys();
-    this.spacebar = this.input.keyboard.addKey(Input.Keyboard.KeyCodes.SPACE);
 
     this.anims.create({
       key: `${ASSETS_KEYS.EXPLOSION}_anim`,
@@ -197,8 +175,8 @@ export default class GameScene extends Scene {
       this.moveAsteroid(this[`${ASSETS_KEYS.ASTEROID}${type}`], index + 1);
     });
 
-    this.moveShip();
-    this.shootBeam();
+    this.battlecruiser.move(this.cursorKeys);
+    this.battlecruiser.shoot(this.spacebar);
 
     (this.projectiles.getChildren() || []).forEach((beam) => {
       beam.update();
