@@ -35,23 +35,18 @@ export default class GameScene extends Scene {
     this.projectiles = this.add.group();
   }
 
+  addAsteroid(type) {
+    this[`${ASSETS_KEYS.ASTEROID}${type}`] = new Asteroid(type,
+      this,
+      Math.Between(0, CONFIG.width),
+      0);
+
+    this.asteroids.add(this[`${ASSETS_KEYS.ASTEROID}${type}`]);
+  }
+
   destroyObject(gameObject) {
     gameObject.setTexture(ASSETS_KEYS.EXPLOSION);
     gameObject.play(`${ASSETS_KEYS.EXPLOSION}_anim`);
-  }
-
-  addAsteroid(asteroid) {
-    const asteroidSprite = this.add.sprite(
-      Math.Between(0, CONFIG.width),
-      0,
-      asteroid.type(),
-    );
-
-    this.asteroids.add(asteroidSprite);
-
-    asteroidSprite.setInteractive();
-
-    return asteroidSprite;
   }
 
   resetAsteroidPosition(shipMoved) {
@@ -119,16 +114,6 @@ export default class GameScene extends Scene {
     this.scoreLabel = this.add.bitmapText(10, 5, ASSETS_KEYS.PIXEL_FONT, `SCORE ${scoreFormated}`, 16);
   }
 
-  addEnemies() {
-    this.asteroidTypes = ['01', '02', '03', '04', '05'];
-
-    this.asteroids = this.physics.add.group();
-    this.asteroidTypes.forEach((type) => {
-      const asteroid = new Asteroid(type);
-      this[asteroid.type()] = this.addAsteroid(asteroid);
-    });
-  }
-
   addEvents() {
     this.input.on('gameobjectdown', this.destroyObject, this);
     this.physics.world.setBoundsCollision();
@@ -139,29 +124,20 @@ export default class GameScene extends Scene {
   }
 
   preload() {
+    this.asteroidTypes = ['01', '02', '03', '04', '05'];
+    this.asteroids = this.physics.add.group();
     this.cursorKeys = this.input.keyboard.createCursorKeys();
     this.spacebar = this.input.keyboard.addKey(Input.Keyboard.KeyCodes.SPACE);
   }
 
   create() {
     this.addBackground();
-    this.addEnemies();
+
+    this.asteroidTypes.forEach((type) => {
+      this.addAsteroid(type);
+    });
+
     this.addBattleCruiser();
-
-    this.anims.create({
-      key: `${ASSETS_KEYS.EXPLOSION}_anim`,
-      frames: this.anims.generateFrameNumbers(ASSETS_KEYS.EXPLOSION),
-      frameRate: 20,
-      repeat: 0,
-      hideOnComplete: true,
-    });
-
-    this.anims.create({
-      key: `${ASSETS_KEYS.BEAM}_anim`,
-      frames: this.anims.generateFrameNumbers(ASSETS_KEYS.BEAM),
-      frameRate: 20,
-      repeat: -1,
-    });
 
     this.addScoreBoard();
 

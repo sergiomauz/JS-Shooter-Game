@@ -122,12 +122,6 @@ export default class PreloaderScene extends Scene {
     });
   }
 
-  preload() {
-    this.addProgressBar();
-    this.timedEvent = this.time.delayedCall(3000, this.ready, [], this);
-    this.loadAssets();
-  }
-
   init() {
     this.readyCount = 0;
   }
@@ -138,5 +132,28 @@ export default class PreloaderScene extends Scene {
     if (this.readyCount === 2) {
       this.scene.start(SCENE_KEYS.TITLE);
     }
+  }
+
+  preload() {
+    this.addProgressBar();
+    this.timedEvent = this.time.delayedCall(3000, this.ready, [], this);
+    this.loadAssets();
+  }
+
+  create() {
+    this.anims.create({
+      key: `${ASSETS_KEYS.EXPLOSION}_anim`,
+      frames: this.anims.generateFrameNumbers(ASSETS_KEYS.EXPLOSION),
+      frameRate: 20,
+      repeat: 0,
+      hideOnComplete: true,
+    });
+
+    this.anims.create({
+      key: `${ASSETS_KEYS.BEAM}_anim`,
+      frames: this.anims.generateFrameNumbers(ASSETS_KEYS.BEAM),
+      frameRate: 20,
+      repeat: -1,
+    });
   }
 }
