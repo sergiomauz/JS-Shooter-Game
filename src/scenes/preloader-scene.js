@@ -1,8 +1,6 @@
 import { Scene } from 'phaser';
 import SCENE_KEYS from '../keys/scene-keys';
 import ASSETS_KEYS from '../keys/assets-keys';
-import PixelFontImage from '../assets/fonts/pixelFont.png';
-import PixelFontXML from '../assets/fonts/pixelFont.xml';
 
 export default class PreloaderScene extends Scene {
   loadAssets() {
@@ -23,7 +21,10 @@ export default class PreloaderScene extends Scene {
       frameWidth: 8,
       frameHeight: 100,
     });
-
+    this.load.spritesheet(ASSETS_KEYS.INPUT_NAME, 'assets/ui/red_input_text.png', {
+      frameWidth: 250,
+      frameHeight: 49,
+    });
     this.load.spritesheet(ASSETS_KEYS.BUTTON, 'assets/ui/red_button01.png', {
       frameWidth: 190,
       frameHeight: 45,
@@ -61,7 +62,7 @@ export default class PreloaderScene extends Scene {
       frameHeight: 54,
     });
 
-    this.load.bitmapFont(ASSETS_KEYS.PIXEL_FONT, PixelFontImage, PixelFontXML);
+    // this.load.bitmapFont(ASSETS_KEYS.PIXEL_FONT, PixelFontImage, PixelFontXML);
     this.load.audio(ASSETS_KEYS.BG_MUSIC, ['assets/music.mod']);
   }
 

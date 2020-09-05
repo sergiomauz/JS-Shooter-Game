@@ -19,11 +19,7 @@ export default class GameScene extends Scene {
     const { score } = this.battlecruiser.player;
     const scoreFormated = this.zeroPad(score, 6);
 
-    if (score === 0) {
-      this.scoreLabel.text = `SCORE ${scoreFormated}`;
-    } else {
-      this.scoreLabel.text = `SCORE ${scoreFormated}`;
-    }
+    this.scoreLabel.text = `SCORE ${scoreFormated}`;
   }
 
   addBackground() {
@@ -39,6 +35,7 @@ export default class GameScene extends Scene {
 
   addBattleCruiser() {
     this.battlecruiser = new BattleCruiser(this,
+      this.playerName,
       CONFIG.width / 2,
       CONFIG.height - 40);
 
@@ -88,6 +85,10 @@ export default class GameScene extends Scene {
       this.battlecruiser);
   }
 
+  init(data) {
+    this.playerName = data.playerName;
+  }
+
   preload() {
     this.asteroidTypes = ['01', '02', '03', '04', '05'];
     this.remainingLiveTypes = ['01', '02', '03'];
@@ -105,7 +106,8 @@ export default class GameScene extends Scene {
 
     this.addBattleCruiser();
 
-    this.scoreLabel = this.add.text(10, 10, '', { fontSize: '32px', fill: '#2BF607' });
+    this.playerNameLabel = this.add.text(10, 5, this.playerName, { fontSize: '32px', fill: '#2BF607' });
+    this.scoreLabel = this.add.text(10, 30, '', { fontSize: '32px', fill: '#2BF607' });
 
     this.addEvents();
   }

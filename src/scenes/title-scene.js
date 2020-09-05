@@ -10,34 +10,7 @@ export default class TitleScene extends Scene {
     this.background.setOrigin(0, 0);
   }
 
-  centerButton(gameObject, offset = 0) {
-    Display.Align.In.Center(
-      gameObject,
-      this.add.zone(
-        CONFIG.width / 2,
-        CONFIG.height / 1.2 - offset * 60,
-        CONFIG.width,
-        CONFIG.height,
-      ),
-    );
-  }
-
-  centerButtonText(gameText, gameButton) {
-    Display.Align.In.Center(
-      gameText,
-      gameButton,
-    );
-  }
-
-  preload() {
-    this.load.image('logo', 'assets/logo.png');
-  }
-
-  create() {
-    this.addBackground();
-
-    this.add.image(400, 175, 'logo');
-
+  addMenu() {
     this.gameButton = this.add.sprite(300, 200, ASSETS_KEYS.BUTTON).setInteractive();
     this.centerButton(this.gameButton, 1);
 
@@ -45,7 +18,7 @@ export default class TitleScene extends Scene {
     this.centerButtonText(this.gameText, this.gameButton);
 
     this.gameButton.on('pointerdown', () => {
-      this.scene.start(SCENE_KEYS.GAME_START);
+      this.scene.start(SCENE_KEYS.GAME_START, { playerName: this.playerNameInput.text });
     });
 
     this.optionsButton = this.add.sprite(300, 200, ASSETS_KEYS.BUTTON).setInteractive();
@@ -75,9 +48,73 @@ export default class TitleScene extends Scene {
     this.input.on('pointerout', (event, gameObjects) => {
       gameObjects[0].setTexture(ASSETS_KEYS.BUTTON);
     });
+
+    this.playerNameLabel = this.add.sprite(300, 200, ASSETS_KEYS.INPUT_NAME);
+    this.centerButton(this.playerNameLabel, 2.5);
+
+    this.playerNameInput = this.add.text(0, 0, 'PLAYER NAME', { fontSize: '32px', fill: '#2BF607' });
+    this.centerButtonText(this.playerNameInput, this.playerNameLabel);
+  }
+
+  validateInputKey(input) {
+    if (input.key !== 'Backspace'
+      && input.key !== 'Enter'
+      && input.key !== 'Shift'
+      && input.key !== 'Alt'
+      && input.key !== 'Tab'
+      && input.key !== 'Control'
+      && input.key !== 'Dead'
+      && !(input.keyCode >= 37 && input.keyCode <= 40)
+      && !(input.keyCode >= 112 && input.keyCode <= 123)
+    ) {
+      return true;
+    }
+    return false;
+  }
+
+  centerButton(gameObject, offset = 0) {
+    Display.Align.In.Center(
+      gameObject,
+      this.add.zone(
+        CONFIG.width / 2,
+        CONFIG.height / 1.2 - offset * 60,
+        CONFIG.width,
+        CONFIG.height,
+      ),
+    );
+  }
+
+  centerButtonText(gameText, gameButton) {
+    Display.Align.In.Center(
+      gameText,
+      gameButton,
+    );
+  }
+
+  handleInputKeys(inputField, inputValue) {
+    this.input.keyboard.on('keydown', (e) => {
+      if (e.key === 'Backspace' && inputValue.length > 0) {
+        inputValue = inputValue.slice(0, inputValue.length - 1);
+        inputField.setText(`${inputValue.toUpperCase()}`);
+      } else if (this.validateInputKey(e) && inputValue.length < 11) {
+        inputValue += e.key;
+        inputField.setText(`${inputValue.toUpperCase()}`);
+      }
+    });
+  }
+
+  create() {
+    this.addBackground();
+
+    this.add.image(400, 175, ASSETS_KEYS.LOGO);
+
+    this.addMenu();
   }
 
   update() {
     this.background.tilePositionY -= 0.5;
+
+    this.handleInputKeys(this.playerNameInput, this.playerNameInput.text);
+    this.centerButtonText(this.playerNameInput, this.playerNameLabel);
   }
 }

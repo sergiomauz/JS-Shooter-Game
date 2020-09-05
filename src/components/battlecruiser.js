@@ -6,7 +6,7 @@ import ASSETS_KEYS from '../keys/assets-keys';
 import CONFIG from '../config';
 
 export default class BattleCruiser extends Physics.Arcade.Sprite {
-  constructor(currentScene, positionX, positionY) {
+  constructor(currentScene, playerName, positionX, positionY) {
     super(currentScene, positionX, positionY, ASSETS_KEYS.BATTLE_CRUISER);
 
     currentScene.add.existing(this);
@@ -14,7 +14,7 @@ export default class BattleCruiser extends Physics.Arcade.Sprite {
 
     this.body.setCollideWorldBounds(true);
     this.scene = currentScene;
-    this.player = new Player('Sergio');
+    this.player = new Player(playerName);
   }
 
   move(cursorKeys) {
