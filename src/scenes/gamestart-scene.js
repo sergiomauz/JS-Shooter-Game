@@ -86,7 +86,11 @@ export default class GameScene extends Scene {
   }
 
   init(data) {
-    this.playerName = data.playerName;
+    if (data.playerName.trim().length > 0) {
+      this.playerName = data.playerName;
+    } else {
+      this.playerName = 'UNNAMED';
+    }
   }
 
   preload() {

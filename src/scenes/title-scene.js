@@ -18,7 +18,7 @@ export default class TitleScene extends Scene {
     this.centerButtonText(this.gameText, this.gameButton);
 
     this.gameButton.on('pointerdown', () => {
-      this.scene.start(SCENE_KEYS.GAME_START, { playerName: this.playerNameInput.text });
+      this.scene.start(SCENE_KEYS.GAME_START, { playerName: this.playerNameInput.text.trim() });
     });
 
     this.optionsButton = this.add.sprite(300, 200, ASSETS_KEYS.BUTTON).setInteractive();
