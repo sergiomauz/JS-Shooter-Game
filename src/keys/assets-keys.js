@@ -1,6 +1,8 @@
 const ASSETS_KEYS = {
   BATTLE_CRUISER: 'battlecruiser',
   BEAM: 'beam',
+  LIFE: 'life',
+  PILOT: 'pilot',
   SPACE_BACKGROUND: 'spaceBackground',
   LOGO: 'phaserLogo',
   BUTTON: 'button',

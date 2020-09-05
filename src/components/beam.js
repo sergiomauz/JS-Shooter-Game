@@ -2,17 +2,17 @@ import { GameObjects } from 'phaser';
 import ASSETS_KEYS from '../keys/assets-keys';
 
 export default class Beam extends GameObjects.Sprite {
-  constructor(scene) {
-    const { x } = scene.battlecruiser;
-    const y = scene.battlecruiser.y - 100;
-    super(scene, x, y, ASSETS_KEYS.BEAM);
-    scene.add.existing(this);
+  constructor(currentScene) {
+    const positionX = currentScene.battlecruiser.x;
+    const positionY = currentScene.battlecruiser.y - 100;
+    super(currentScene, positionX, positionY, ASSETS_KEYS.BEAM);
+    currentScene.add.existing(this);
 
     this.play(`${ASSETS_KEYS.BEAM}_anim`);
-    scene.physics.world.enableBody(this);
+    currentScene.physics.world.enableBody(this);
     this.body.velocity.y = -250;
 
-    scene.projectiles.add(this);
+    currentScene.projectiles.add(this);
   }
 
   update() {

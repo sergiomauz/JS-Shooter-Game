@@ -1,8 +1,14 @@
 import { Scene, Display } from 'phaser';
+import CONFIG from '../config';
 import SCENE_KEYS from '../keys/scene-keys';
 import ASSETS_KEYS from '../keys/assets-keys';
 
 export default class OptionsScene extends Scene {
+  addBackground() {
+    this.background = this.add.tileSprite(0, 0, CONFIG.width, CONFIG.height, `${ASSETS_KEYS.SPACE_BACKGROUND}`);
+    this.background.setOrigin(0, 0);
+  }
+
   updateAudio() {
     if (this.musicOn === false) {
       this.musicButton.setTexture(ASSETS_KEYS.UNCHECKED_BOX);
@@ -18,6 +24,8 @@ export default class OptionsScene extends Scene {
   }
 
   create() {
+    this.addBackground();
+
     this.musicOn = true;
     this.soundOn = true;
 
@@ -59,5 +67,9 @@ export default class OptionsScene extends Scene {
     });
 
     this.updateAudio();
+  }
+
+  update() {
+    this.background.tilePositionY -= 0.5;
   }
 }

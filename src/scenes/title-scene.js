@@ -6,7 +6,7 @@ import ASSETS_KEYS from '../keys/assets-keys';
 
 export default class TitleScene extends Scene {
   addBackground() {
-    this.background = this.add.tileSprite(0, 0, CONFIG.width, CONFIG.height, 'spaceBackground');
+    this.background = this.add.tileSprite(0, 0, CONFIG.width, CONFIG.height, `${ASSETS_KEYS.SPACE_BACKGROUND}`);
     this.background.setOrigin(0, 0);
   }
 
@@ -45,7 +45,7 @@ export default class TitleScene extends Scene {
     this.centerButtonText(this.gameText, this.gameButton);
 
     this.gameButton.on('pointerdown', () => {
-      this.scene.start(SCENE_KEYS.GAME);
+      this.scene.start(SCENE_KEYS.GAME_START);
     });
 
     this.optionsButton = this.add.sprite(300, 200, ASSETS_KEYS.BUTTON).setInteractive();

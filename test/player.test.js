@@ -1,14 +1,14 @@
 import Player from '../src/classes/player';
 
-test('When a Player is created, he/she has 3 lifes.', () => {
+test('When a Player is created, he/she has 3 lives.', () => {
   const player = new Player();
-  expect(player.getLifes()).toBe(3);
+  expect(player.getLives()).toBe(3);
 });
 
 test('When a player dies, he/she loses a life.', () => {
   const player = new Player();
   player.die();
-  expect(player.getLifes()).toBe(2);
+  expect(player.getLives()).toBe(2);
 });
 
 test('When a player dies 3 times, the player is defeated and game must be finished.', () => {
@@ -16,7 +16,7 @@ test('When a player dies 3 times, the player is defeated and game must be finish
   player.die();
   player.die();
   player.die();
-  expect(player.getLifes()).toBe(0);
+  expect(player.getLives()).toBe(0);
   expect(player.wasDefeated()).toBe(true);
 });
 
@@ -24,7 +24,7 @@ test('When a player dies less than 3 times, the player is alive and game must be
   const player = new Player();
   player.die();
   player.die();
-  expect(player.getLifes()).toBe(1);
+  expect(player.getLives()).toBe(1);
   expect(player.wasDefeated()).not.toBe(true);
 });
 

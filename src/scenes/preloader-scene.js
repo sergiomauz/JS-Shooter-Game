@@ -46,18 +46,26 @@ export default class PreloaderScene extends Scene {
         frameHeight: 60,
       });
     });
+    ['01', '02', '03'].forEach((life) => {
+      this.load.spritesheet(ASSETS_KEYS.LIFE.concat(life), `assets/sprites/lives/${life}.png`, {
+        frameWidth: 66,
+        frameHeight: 54,
+      });
+    });
     this.load.spritesheet(ASSETS_KEYS.EXPLOSION, 'assets/sprites/asteroids/explosion.png', {
       frameWidth: 120,
       frameHeight: 120,
     });
+    this.load.spritesheet(ASSETS_KEYS.PILOT, 'assets/sprites/pilot.png', {
+      frameWidth: 55,
+      frameHeight: 54,
+    });
 
     this.load.bitmapFont(ASSETS_KEYS.PIXEL_FONT, PixelFontImage, PixelFontXML);
-
     this.load.audio(ASSETS_KEYS.BG_MUSIC, ['assets/music.mod']);
   }
 
   addProgressBar() {
-    // display progress bar
     const progressBar = this.add.graphics();
     const progressBox = this.add.graphics();
     progressBox.fillStyle(0x222222, 0.8);
@@ -98,7 +106,6 @@ export default class PreloaderScene extends Scene {
     });
     assetText.setOrigin(0.5, 0.5);
 
-    // update progress bar
     this.load.on('progress', (value) => {
       percentText.setText(`${100 * parseInt(value, 10)}%`);
       progressBar.clear();
@@ -106,12 +113,10 @@ export default class PreloaderScene extends Scene {
       progressBar.fillRect(250, 280, 300 * value, 30);
     });
 
-    // update file progress text
     this.load.on('fileprogress', (file) => {
       assetText.setText(`Loading asset: ${file.key}`);
     });
 
-    // remove progress bar when complete
     this.load.on('complete', () => {
       progressBar.destroy();
       progressBox.destroy();

@@ -1,6 +1,6 @@
 export default class Player {
   constructor(name) {
-    this.lifes = 3;
+    this.lives = 3;
     this.score = 0;
     this.name = name;
   }
@@ -14,18 +14,18 @@ export default class Player {
     return this.score;
   }
 
-  getLifes() {
-    return this.lifes;
+  getLives() {
+    return this.lives;
   }
 
   wasDefeated() {
-    if (this.lifes === 0) {
+    if (this.lives === 0) {
       return true;
     }
     return false;
   }
 
   die() {
-    this.lifes -= 1;
+    this.lives -= 1;
   }
 }

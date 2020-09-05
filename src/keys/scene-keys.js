@@ -1,7 +1,7 @@
 const SCENE_KEYS = {
-  GAME: 'Game',
+  GAME_START: 'Game_Start',
+  GAME_OVER: 'Game_Over',
   CREDITS: 'Credits',
-  BOOT: 'boot',
   PRELOADER: 'Preloader',
   TITLE: 'Title',
   OPTIONS: 'Options',

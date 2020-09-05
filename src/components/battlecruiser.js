@@ -35,17 +35,17 @@ export default class BattleCruiser extends Physics.Arcade.Sprite {
 
   shoot(spacebar) {
     if (Input.Keyboard.JustDown(spacebar)) {
-      if (this.active) {
+      if (this.alpha >= 1 && this.active) {
         this.newBeam = new Beam(this.scene);
       }
     }
   }
 
   reset() {
-    const x = CONFIG.width / 2;
-    const y = CONFIG.height;
+    const positionX = CONFIG.width / 2;
+    const positionY = CONFIG.height;
 
-    this.enableBody(true, x, y, true, true);
+    this.enableBody(true, positionX, positionY, true, true);
 
     this.alpha = 0.5;
     this.scene.tweens.add({
@@ -75,10 +75,14 @@ export default class BattleCruiser extends Physics.Arcade.Sprite {
       callbackScope: currentPlayer,
       loop: false,
     });
+
+    this.player.lives -= 1;
+    currentPlayer.scene.lives.setTexture(`${ASSETS_KEYS.LIFE}0${this.player.lives}`);
   }
 
   hitEnemy(projectile, enemy) {
     this.newExplosion = new Explosion(this.scene, enemy.x, enemy.y);
+    this.player.score += 10 * enemy.speed;
     projectile.destroy();
     enemy.reset();
   }

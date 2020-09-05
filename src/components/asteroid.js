@@ -3,7 +3,7 @@ import CONFIG from '../config';
 import ASSETS_KEYS from '../keys/assets-keys';
 
 export default class Asteroid extends Physics.Arcade.Sprite {
-  constructor(type, currentScene, positionX, positionY) {
+  constructor(type, speedMovement, currentScene, positionX, positionY) {
     super(currentScene, positionX, positionY, `${ASSETS_KEYS.ASTEROID}${type}`);
 
     currentScene.add.existing(this);
@@ -12,6 +12,7 @@ export default class Asteroid extends Physics.Arcade.Sprite {
     this.setInteractive();
 
     this.typeOf = type;
+    this.speed = speedMovement;
     this.scene = currentScene;
   }
 
@@ -20,8 +21,8 @@ export default class Asteroid extends Physics.Arcade.Sprite {
     this.x = Math.Between(25, CONFIG.width - 25);
   }
 
-  move(speedMovement) {
-    this.y += speedMovement;
+  move() {
+    this.y += this.speed;
     if (this.y > CONFIG.height) {
       this.reset();
     }

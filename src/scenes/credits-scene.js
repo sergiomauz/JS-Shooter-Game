@@ -1,11 +1,19 @@
 import { Scene, Display } from 'phaser';
-import SCENE_KEYS from '../keys/scene-keys';
 import CONFIG from '../config';
+import SCENE_KEYS from '../keys/scene-keys';
+import ASSETS_KEYS from '../keys/assets-keys';
 
 export default class CreditsScene extends Scene {
+  addBackground() {
+    this.background = this.add.tileSprite(0, 0, CONFIG.width, CONFIG.height, `${ASSETS_KEYS.SPACE_BACKGROUND}`);
+    this.background.setOrigin(0, 0);
+  }
+
   create() {
+    this.addBackground();
+
     this.creditsText = this.add.text(0, 0, 'CREDITS', { fontSize: '32px', fill: '#0f0', fontWeight: 'bold' });
-    this.madeByText = this.add.text(0, 0, 'CREATED BY: Sergio Zambrano', { fontSize: '26px', fill: '#0f0', fontWeight: 'bold' });
+    this.madeByText = this.add.text(0, 0, 'CREATED BY: Sergio Zambrano\n\n\n\nASSETS FROM: Starcraft - Blizzard Entertainment', { fontSize: '26px', fill: '#0f0', fontWeight: 'bold' });
     this.zone = this.add.zone(
       CONFIG.width / 2,
       CONFIG.height / 2,
@@ -47,5 +55,9 @@ export default class CreditsScene extends Scene {
         },
       },
     );
+  }
+
+  update() {
+    this.background.tilePositionY -= 0.5;
   }
 }
