@@ -3,6 +3,7 @@ import { Scene, Display } from 'phaser';
 import CONFIG from '../config';
 import SCENE_KEYS from '../keys/scene';
 import ASSETS_KEYS from '../keys/assets';
+import GLOBAL_VAR from '../keys/global';
 
 export default class TitleScene extends Scene {
   addBackground() {
@@ -106,7 +107,11 @@ export default class TitleScene extends Scene {
   create() {
     this.addBackground();
 
-    this.sound.play(ASSETS_KEYS.BG_MUSIC, { volume: 0.25, loop: true });
+    if (!GLOBAL_VAR.MUSIC_ON) {
+      this.sound.play(ASSETS_KEYS.BG_MUSIC, { volume: 0.25, loop: true });
+      GLOBAL_VAR.MUSIC_ON = true;
+    }
+
     this.add.image(400, 175, ASSETS_KEYS.LOGO);
 
     this.addMenu();

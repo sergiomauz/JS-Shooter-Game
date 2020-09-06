@@ -65,6 +65,14 @@ export default class PreloaderScene extends Scene {
       frameWidth: 300,
       frameHeight: 60,
     });
+    this.load.spritesheet(ASSETS_KEYS.TOP_TEN, 'assets/topten.png', {
+      frameWidth: 300,
+      frameHeight: 60,
+    });
+    this.load.spritesheet(ASSETS_KEYS.CREDITS, 'assets/credits.png', {
+      frameWidth: 300,
+      frameHeight: 60,
+    });
     this.load.audio(ASSETS_KEYS.BG_MUSIC, ['assets/audio/bgmusic.mp3']);
     this.load.audio(ASSETS_KEYS.EXPLOSION_SOUND, ['assets/audio/explosion.wav']);
   }
@@ -143,7 +151,7 @@ export default class PreloaderScene extends Scene {
     }
   }
 
-  preload() {
+  async preload() {
     this.addProgressBar();
     this.timedEvent = this.time.delayedCall(3000, this.ready, [], this);
     this.loadAssets();

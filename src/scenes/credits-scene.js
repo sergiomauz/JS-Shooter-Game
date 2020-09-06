@@ -12,8 +12,23 @@ export default class CreditsScene extends Scene {
   create() {
     this.addBackground();
 
-    this.creditsText = this.add.text(0, 0, 'CREDITS', { fontSize: '32px', fill: '#0f0', fontWeight: 'bold' });
-    this.madeByText = this.add.text(0, 0, 'CREATED BY:\nSergio Zambrano\n\n\n\nASSETS FROM:\nStarcraft - Blizzard Entertainment', { fontSize: '26px', fill: '#0f0', fontWeight: 'bold' });
+    this.creditsText = this.add.image(
+      0,
+      0,
+      ASSETS_KEYS.CREDITS,
+    );
+
+    this.madeByText = this.add.text(
+      0,
+      0,
+      'CREATED BY:\nSergio Zambrano\n\n\n\nASSETS FROM:\nStarcraft - Blizzard Entertainment',
+      {
+        fontSize: '26px',
+        fill: '#0f0',
+        align: 'center',
+      },
+    );
+
     this.zone = this.add.zone(
       CONFIG.width / 2,
       CONFIG.height / 2,

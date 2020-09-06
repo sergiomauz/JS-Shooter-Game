@@ -19,18 +19,19 @@ export default class GameOver extends Scene {
     this.background.setOrigin(0, 0);
   }
 
-  printLeaderboard() {
-    if (this.top10.code > 0) {
-      let strTop10 = '';
-      this.top10.data.forEach((item, index) => {
-        strTop10 += `\n${index + 1}\t\t${this.zeroPad(item.score, 6)}\t\t${item.user}`;
-      });
-
-      this.scoreLabel = this.add.text(400, 300, strTop10, { fontSize: '32px', fill: '#2BF607' });
-      this.scoreLabel.setOrigin(0.5, 0.5);
+  printScoreBoard(isTop10) {
+    let congratulations = '';
+    if (isTop10) {
+      congratulations = '\n\nContratulations!\nYou are in\nthe Top 10 pilots';
     }
-  }
+    const gameOverMessage = `${this.playerName}, YOUR SCORE: ${this.playerScore}${congratulations}`;
+    this.scoreLabel = this.add.text(0, 0, gameOverMessage, { fontSize: '32px', fill: '#2BF607', align: 'center' });
 
+    Display.Align.In.Center(
+      this.scoreLabel,
+      this.zone,
+    );
+  }
 
   init(data) {
     this.leaderboard = new Leaderboard();
@@ -39,15 +40,32 @@ export default class GameOver extends Scene {
     this.playerScore = data.playerScore;
   }
 
+  preload() {
+    this.zone = this.add.zone(
+      CONFIG.width / 2,
+      CONFIG.height / 2,
+      CONFIG.width,
+      CONFIG.height,
+    );
+  }
+
   async create() {
     this.addBackground();
-
     this.add.image(400, 100, ASSETS_KEYS.GAME_OVER);
 
-    this.newScore = await this.leaderboard.saveScore(this.playerName, this.playerScore);
-    this.top10 = await this.leaderboard.getScoreAsync();
+    const top10 = await this.leaderboard.getScoreAsync();
+    let isTop10 = false;
+    if (top10.code > 0) {
+      if (top10.data.length < 10) {
+        this.newScore = await this.leaderboard.saveScore(this.playerName, this.playerScore);
+        isTop10 = true;
+      } else if (this.playerScore > top10.data[9].score) {
+        this.newScore = await this.leaderboard.saveScore(this.playerName, this.playerScore);
+        isTop10 = true;
+      }
+    }
 
-    this.printLeaderboard();
+    this.printScoreBoard(isTop10);
 
     this.gameButton = this.add.sprite(300, 200, ASSETS_KEYS.BUTTON).setInteractive();
     Display.Align.In.Center(

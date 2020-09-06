@@ -31,7 +31,7 @@ The most important goal is getting the highest score. Your name will be put in t
 
 - Node JS
 - Webpack
-- Javascript
+- Javascript ES6
 - Babel
 - Phaser
 - Jest
@@ -45,7 +45,7 @@ Check out the live demo [here](https://phaser-spacecraft.netlify.app/)
 
 ### Pre Requisites
 
-- Go to account in [Leaderboard API](https://www.notion.so/Leaderboard-API-service-24c0c3c116974ac49488d4eb0267ade3) and get a Key for you.
+- Go to [Leaderboard API](https://www.notion.so/Leaderboard-API-service-24c0c3c116974ac49488d4eb0267ade3) and get a Key for you.
 - Install Node JS. ([NodeJS Documentation](https://nodejs.org/en/docs/)) 
 - Install Webpack. ([Webpack Documentation](https://webpack.js.org/guides/installation/)) 
 

@@ -2,6 +2,8 @@ const ASSETS_KEYS = {
   BATTLE_CRUISER: 'battlecruiser',
   BEAM: 'beam',
   GAME_OVER: 'gameover',
+  TOP_TEN: 'top10',
+  CREDITS: 'credits',
   INPUT_NAME: 'inputName',
   LIFE: 'life',
   PILOT: 'pilot',

@@ -19,39 +19,42 @@ export default class Top10Scene extends Scene {
     this.background.setOrigin(0, 0);
   }
 
-  printLeaderboard() {
-    if (this.top10.code > 0) {
-      let strTop10 = '';
-      this.top10.data.forEach((item, index) => {
-        strTop10 += `\n${index + 1}\t\t${this.zeroPad(item.score, 6)}\t\t${item.user}`;
-      });
+  printLeaderboard(top10) {
+    let strTop10 = '';
+    top10.forEach((item, index) => {
+      strTop10 += `\n${index + 1}\t\t${this.zeroPad(item.score, 6)}\t\t${item.user}`;
+    });
 
-      this.scoreLabel = this.add.text(400, 300, strTop10, { fontSize: '32px', fill: '#2BF607' });
-      this.scoreLabel.setOrigin(0.5, 0.5);
-    }
-  }
-
-  init(data) {
-    this.leaderboard = new Leaderboard();
-
-    this.playerName = data.playerName;
-    this.playerScore = data.playerScore;
+    this.scoreLabel = this.add.text(400, 300, strTop10, { fontSize: '32px', fill: '#2BF607' });
+    this.scoreLabel.setOrigin(0.5, 0.5);
   }
 
   async create() {
     this.addBackground();
 
+    this.leaderboard = new Leaderboard();
+    const top10 = await this.leaderboard.getScoreAsync();
+    this.printLeaderboard(top10.data || []);
 
-    this.newScore = await this.leaderboard.saveScore(this.playerName, this.playerScore);
-    this.top10 = await this.leaderboard.getScoreAsync();
-    this.printLeaderboard();
+    this.add.image(400, 100, ASSETS_KEYS.TOP_TEN);
 
-    this.menuButton = this.add.sprite(400, 500, ASSETS_KEYS.BUTTON).setInteractive();
+    this.menuButton = this.add.sprite(CONFIG.width / 2,
+      CONFIG.height - 75,
+      ASSETS_KEYS.BUTTON).setInteractive();
+
     this.menuText = this.add.text(0, 0, 'Menu', { fontSize: '32px', fill: '#2BF607' });
     Display.Align.In.Center(this.menuText, this.menuButton);
 
     this.menuButton.on('pointerdown', () => {
       this.scene.start(SCENE_KEYS.TITLE);
+    });
+
+    this.menuButton.on('pointerover', () => {
+      this.menuButton.setTexture(ASSETS_KEYS.BUTTON_ON_HOVER);
+    });
+
+    this.menuButton.on('pointerout', () => {
+      this.menuButton.setTexture(ASSETS_KEYS.BUTTON);
     });
   }
 

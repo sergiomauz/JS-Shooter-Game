@@ -117,7 +117,7 @@ export default class GameScene extends Scene {
   }
 
   update() {
-    if (this.battlecruiser.player.lives === 0) {
+    if (this.battlecruiser.player.lives <= 0) {
       this.scene.start(SCENE_KEYS.GAME_OVER,
         {
           playerName: this.playerName,
