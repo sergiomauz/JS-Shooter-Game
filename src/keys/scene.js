@@ -4,7 +4,7 @@ const SCENE_KEYS = {
   CREDITS: 'Credits',
   PRELOADER: 'Preloader',
   TITLE: 'Title',
-  OPTIONS: 'Options',
+  TOP10SCORES: 'Top10Scores',
 };
 
 export default SCENE_KEYS;

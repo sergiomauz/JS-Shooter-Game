@@ -21,14 +21,14 @@ export default class TitleScene extends Scene {
       this.scene.start(SCENE_KEYS.GAME_START, { playerName: this.playerNameInput.text.trim() });
     });
 
-    this.optionsButton = this.add.sprite(300, 200, ASSETS_KEYS.BUTTON).setInteractive();
-    this.centerButton(this.optionsButton);
+    this.scoresButton = this.add.sprite(300, 200, ASSETS_KEYS.BUTTON).setInteractive();
+    this.centerButton(this.scoresButton);
 
-    this.optionsText = this.add.text(0, 0, 'Options', { fontSize: '32px', fill: '#2BF607' });
-    this.centerButtonText(this.optionsText, this.optionsButton);
+    this.scoresText = this.add.text(0, 0, 'Top 10', { fontSize: '32px', fill: '#2BF607' });
+    this.centerButtonText(this.scoresText, this.scoresButton);
 
-    this.optionsButton.on('pointerdown', () => {
-      this.scene.start(SCENE_KEYS.OPTIONS);
+    this.scoresButton.on('pointerdown', () => {
+      this.scene.start(SCENE_KEYS.TOP10SCORES);
     });
 
     this.creditsButton = this.add.sprite(300, 200, ASSETS_KEYS.BUTTON).setInteractive();
@@ -106,6 +106,7 @@ export default class TitleScene extends Scene {
   create() {
     this.addBackground();
 
+    this.sound.play(ASSETS_KEYS.BG_MUSIC, { volume: 0.25, loop: true });
     this.add.image(400, 175, ASSETS_KEYS.LOGO);
 
     this.addMenu();

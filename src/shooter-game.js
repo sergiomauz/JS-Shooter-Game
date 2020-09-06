@@ -5,7 +5,7 @@ import GameStartScene from './scenes/gamestart-scene';
 import GameOverScene from './scenes/gameover-scene';
 import PreloaderScene from './scenes/preloader-scene';
 import TitleScene from './scenes/title-scene';
-import OptionsScene from './scenes/options-scene';
+import Top10Scene from './scenes/top10-scene';
 import CreditsScene from './scenes/credits-scene';
 
 export default class ShooterGame extends Game {
@@ -14,7 +14,7 @@ export default class ShooterGame extends Game {
 
     this.scene.add(SCENE_KEYS.PRELOADER, PreloaderScene);
     this.scene.add(SCENE_KEYS.TITLE, TitleScene);
-    this.scene.add(SCENE_KEYS.OPTIONS, OptionsScene);
+    this.scene.add(SCENE_KEYS.TOP10SCORES, Top10Scene);
     this.scene.add(SCENE_KEYS.CREDITS, CreditsScene);
     this.scene.add(SCENE_KEYS.GAME_START, GameStartScene);
     this.scene.add(SCENE_KEYS.GAME_OVER, GameOverScene);

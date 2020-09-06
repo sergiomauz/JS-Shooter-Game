@@ -14,6 +14,7 @@ const ASSETS_KEYS = {
   ASTEROID: 'asteroid',
   EXPLOSION: 'explosion',
   BG_MUSIC: 'bgMusic',
+  EXPLOSION_SOUND: 'exposionAudio',
   PIXEL_FONT: 'pixelFont',
 };
 

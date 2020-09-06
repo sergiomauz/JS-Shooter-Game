@@ -77,13 +77,15 @@ export default class BattleCruiser extends Physics.Arcade.Sprite {
     });
 
     this.player.lives -= 1;
+    currentPlayer.scene.sound.play(ASSETS_KEYS.EXPLOSION_SOUND, { volume: 0.1 });
     currentPlayer.scene.lives.setTexture(`${ASSETS_KEYS.LIFE}0${this.player.lives}`);
   }
 
   hitEnemy(projectile, enemy) {
     this.newExplosion = new Explosion(this.scene, enemy.x, enemy.y);
-    this.player.score += 10 * enemy.speed;
+    this.player.score += 5 * enemy.speed;
     projectile.destroy();
     enemy.reset();
+    this.scene.sound.play(ASSETS_KEYS.EXPLOSION_SOUND, { volume: 0.1 });
   }
 }

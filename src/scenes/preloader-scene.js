@@ -65,7 +65,8 @@ export default class PreloaderScene extends Scene {
       frameWidth: 300,
       frameHeight: 60,
     });
-    this.load.audio(ASSETS_KEYS.BG_MUSIC, ['assets/music.mod']);
+    this.load.audio(ASSETS_KEYS.BG_MUSIC, ['assets/audio/bgmusic.mp3']);
+    this.load.audio(ASSETS_KEYS.EXPLOSION_SOUND, ['assets/audio/explosion.wav']);
   }
 
   addProgressBar() {
