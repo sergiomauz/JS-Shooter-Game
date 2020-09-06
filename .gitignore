@@ -1,4 +1,4 @@
 # .gitignore
 node_modules/
 build/
-src/keys/api-keys.js
+src/keys/api.js

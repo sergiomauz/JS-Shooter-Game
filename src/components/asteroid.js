@@ -1,6 +1,6 @@
 import { Physics, Math } from 'phaser';
 import CONFIG from '../config';
-import ASSETS_KEYS from '../keys/assets-keys';
+import ASSETS_KEYS from '../keys/assets';
 
 export default class Asteroid extends Physics.Arcade.Sprite {
   constructor(type, speedMovement, currentScene, positionX, positionY) {

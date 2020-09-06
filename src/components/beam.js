@@ -1,5 +1,5 @@
 import { GameObjects } from 'phaser';
-import ASSETS_KEYS from '../keys/assets-keys';
+import ASSETS_KEYS from '../keys/assets';
 
 export default class Beam extends GameObjects.Sprite {
   constructor(currentScene) {

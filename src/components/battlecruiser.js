@@ -2,7 +2,7 @@ import { Physics, Input } from 'phaser';
 import Player from '../classes/player';
 import Explosion from './explosion';
 import Beam from './beam';
-import ASSETS_KEYS from '../keys/assets-keys';
+import ASSETS_KEYS from '../keys/assets';
 import CONFIG from '../config';
 
 export default class BattleCruiser extends Physics.Arcade.Sprite {

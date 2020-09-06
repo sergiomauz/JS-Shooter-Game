@@ -1,6 +1,6 @@
 import { Scene } from 'phaser';
-import SCENE_KEYS from '../keys/scene-keys';
-import ASSETS_KEYS from '../keys/assets-keys';
+import SCENE_KEYS from '../keys/scene';
+import ASSETS_KEYS from '../keys/assets';
 
 export default class PreloaderScene extends Scene {
   loadAssets() {
@@ -61,8 +61,10 @@ export default class PreloaderScene extends Scene {
       frameWidth: 55,
       frameHeight: 54,
     });
-
-    // this.load.bitmapFont(ASSETS_KEYS.PIXEL_FONT, PixelFontImage, PixelFontXML);
+    this.load.spritesheet(ASSETS_KEYS.GAME_OVER, 'assets/gameover.png', {
+      frameWidth: 300,
+      frameHeight: 60,
+    });
     this.load.audio(ASSETS_KEYS.BG_MUSIC, ['assets/music.mod']);
   }
 

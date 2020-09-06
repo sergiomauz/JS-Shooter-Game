@@ -1,8 +1,8 @@
 /* eslint-disable class-methods-use-this */
 import { Scene, Display } from 'phaser';
 import CONFIG from '../config';
-import SCENE_KEYS from '../keys/scene-keys';
-import ASSETS_KEYS from '../keys/assets-keys';
+import SCENE_KEYS from '../keys/scene';
+import ASSETS_KEYS from '../keys/assets';
 
 export default class TitleScene extends Scene {
   addBackground() {

@@ -3,8 +3,8 @@ import { Scene, Input, Math } from 'phaser';
 import Asteroid from '../components/asteroid';
 import BattleCruiser from '../components/battlecruiser';
 import CONFIG from '../config';
-import ASSETS_KEYS from '../keys/assets-keys';
-import SCENE_KEYS from '../keys/scene-keys';
+import ASSETS_KEYS from '../keys/assets';
+import SCENE_KEYS from '../keys/scene';
 
 export default class GameScene extends Scene {
   zeroPad(number, size) {
@@ -118,7 +118,11 @@ export default class GameScene extends Scene {
 
   update() {
     if (this.battlecruiser.player.lives === 0) {
-      this.scene.start(SCENE_KEYS.GAME_OVER);
+      this.scene.start(SCENE_KEYS.GAME_OVER,
+        {
+          playerName: this.playerName,
+          playerScore: this.battlecruiser.player.score,
+        });
     }
 
     this.background.tilePositionY -= 0.5;

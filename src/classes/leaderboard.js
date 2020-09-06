@@ -1,45 +1,56 @@
-import API_KEYS from '../keys/api-keys';
+import API_KEYS from '../keys/api';
+import 'babel-polyfill';
 
 export default class Leaderboard {
   constructor() {
     this.urlAPI = `https://us-central1-js-capstone-backend.cloudfunctions.net/api/games/${API_KEYS.LEADERBOARD}/scores/`;
   }
 
-  // saveScore(playerName, score) { }
-  async getScore() {
+  async saveScore(playerName, playerScore) {
+    const fetchConfig = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8',
+      },
+      body: new URLSearchParams({
+        user: playerName,
+        score: playerScore,
+      }),
+    };
+
+    this.info = await fetch(this.urlAPI, fetchConfig)
+      .then((responseData) => responseData.text())
+      .then((jsonData) => ({
+        code: 1,
+        msg: jsonData.result,
+      }))
+      .catch((err) => ({
+        code: 0,
+        msg: err,
+      }));
+
+    return this.info;
+  }
+
+  async getScoreAsync() {
     this.info = await fetch(this.urlAPI)
       .then((responseData) => responseData.json())
       .then((jsonData) => {
-        /*
-        let code = 0;
-        let data = {
-          message: jsonData.message,
-        };
+        const answer = [];
 
-        if (jsonData.cod === 200) {
-          code = 1;
-          data = {
-            message: 'OK',
-            coordinates: {
-              latitude: jsonData.coord.lat,
-              longitude: jsonData.coord.lon,
-            },
-          };
-        } else if (jsonData.cod === 401) {
-          code = -1;
-        }
+        jsonData.result.forEach((item) => {
+          answer.push({ user: item.user, score: parseInt(item.score, 10) });
+        });
 
         return {
-          result: code,
-          data,
+          code: 1,
+          data: answer.sort((itemA, itemB) => itemB.score - itemA.score).slice(0, 10),
         };
-        */
       })
-      .catch((err) => ({
-        result: -1,
-        data: err.message,
+      .catch(() => ({
+        code: 0,
+        data: [],
       }));
-
     return this.info;
   }
 }
