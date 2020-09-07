@@ -26,8 +26,4 @@ export default class Asteroid extends Physics.Arcade.Sprite {
       this.reset();
     }
   }
-
-  type() {
-    return `${ASSETS_CONSTANTS.ASTEROID}${this.typeOf}`;
-  }
 }

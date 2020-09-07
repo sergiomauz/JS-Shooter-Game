@@ -26,6 +26,39 @@ export default class GameOver extends Scene {
     this.playerScore = data.playerScore;
   }
 
+  addResetButton() {
+    this.gameButton = this.add.sprite(300, 200, ASSETS_CONSTANTS.BUTTON).setInteractive();
+    Display.Align.In.Center(
+      this.gameButton,
+      this.add.zone(
+        GAME_CONFIG.width / 2,
+        GAME_CONFIG.height - 80,
+        GAME_CONFIG.width,
+        GAME_CONFIG.height,
+      ),
+    );
+
+    this.gameText = this.add.text(0, 0, 'Reset', { fontSize: '32px', fill: '#2BF607' });
+    Display.Align.In.Center(
+      this.gameText,
+      this.gameButton,
+    );
+  }
+
+  addEvents() {
+    this.input.on('pointerover', (event, gameObjects) => {
+      gameObjects[0].setTexture(ASSETS_CONSTANTS.BUTTON_ON_HOVER);
+    });
+
+    this.input.on('pointerout', (event, gameObjects) => {
+      gameObjects[0].setTexture(ASSETS_CONSTANTS.BUTTON);
+    });
+
+    this.gameButton.on('pointerdown', () => {
+      this.scene.start(SCENE_CONSTANTS.TITLE);
+    });
+  }
+
   preload() {
     this.zone = this.add.zone(
       GAME_CONFIG.width / 2,
@@ -54,34 +87,9 @@ export default class GameOver extends Scene {
 
     this.printScoreBoard(isTop10);
 
-    this.gameButton = this.add.sprite(300, 200, ASSETS_CONSTANTS.BUTTON).setInteractive();
-    Display.Align.In.Center(
-      this.gameButton,
-      this.add.zone(
-        GAME_CONFIG.width / 2,
-        GAME_CONFIG.height - 80,
-        GAME_CONFIG.width,
-        GAME_CONFIG.height,
-      ),
-    );
+    this.addResetButton();
 
-    this.gameText = this.add.text(0, 0, 'Reset', { fontSize: '32px', fill: '#2BF607' });
-    Display.Align.In.Center(
-      this.gameText,
-      this.gameButton,
-    );
-
-    this.gameButton.on('pointerdown', () => {
-      this.scene.start(SCENE_CONSTANTS.TITLE);
-    });
-
-    this.input.on('pointerover', (event, gameObjects) => {
-      gameObjects[0].setTexture(ASSETS_CONSTANTS.BUTTON_ON_HOVER);
-    });
-
-    this.input.on('pointerout', (event, gameObjects) => {
-      gameObjects[0].setTexture(ASSETS_CONSTANTS.BUTTON);
-    });
+    this.addEvents();
   }
 
   update() {
