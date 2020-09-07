@@ -1,24 +1,23 @@
 import { Game } from 'phaser';
-import CONFIG from './config';
-import SCENE_KEYS from './keys/scene';
-import GameStartScene from './scenes/gamestart-scene';
-import GameOverScene from './scenes/gameover-scene';
-import PreloaderScene from './scenes/preloader-scene';
-import TitleScene from './scenes/title-scene';
-import Top10Scene from './scenes/top10-scene';
-import CreditsScene from './scenes/credits-scene';
+import { SCENE_CONSTANTS, GAME_CONFIG } from './helpers/constants';
+import GameStartScene from './scenes/gamestart';
+import GameOverScene from './scenes/gameover';
+import PreloaderScene from './scenes/preloader';
+import TitleScene from './scenes/title';
+import Top10Scene from './scenes/top10';
+import CreditsScene from './scenes/credits';
 
 export default class ShooterGame extends Game {
   constructor() {
-    super(CONFIG);
+    super(GAME_CONFIG);
 
-    this.scene.add(SCENE_KEYS.PRELOADER, PreloaderScene);
-    this.scene.add(SCENE_KEYS.TITLE, TitleScene);
-    this.scene.add(SCENE_KEYS.TOP10SCORES, Top10Scene);
-    this.scene.add(SCENE_KEYS.CREDITS, CreditsScene);
-    this.scene.add(SCENE_KEYS.GAME_START, GameStartScene);
-    this.scene.add(SCENE_KEYS.GAME_OVER, GameOverScene);
+    this.scene.add(SCENE_CONSTANTS.PRELOADER, PreloaderScene);
+    this.scene.add(SCENE_CONSTANTS.TITLE, TitleScene);
+    this.scene.add(SCENE_CONSTANTS.TOP10SCORES, Top10Scene);
+    this.scene.add(SCENE_CONSTANTS.CREDITS, CreditsScene);
+    this.scene.add(SCENE_CONSTANTS.GAME_START, GameStartScene);
+    this.scene.add(SCENE_CONSTANTS.GAME_OVER, GameOverScene);
 
-    this.scene.start(SCENE_KEYS.PRELOADER);
+    this.scene.start(SCENE_CONSTANTS.PRELOADER);
   }
 }

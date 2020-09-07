@@ -1,10 +1,10 @@
 import { GameObjects } from 'phaser';
-import ASSETS_KEYS from '../keys/assets';
+import { ASSETS_CONSTANTS } from '../helpers/constants';
 
 export default class Top10 extends GameObjects.Sprite {
   constructor(currentScene, positionX, positionY) {
-    super(currentScene, positionX, positionY, ASSETS_KEYS.EXPLOSION);
+    super(currentScene, positionX, positionY, ASSETS_CONSTANTS.EXPLOSION);
     currentScene.add.existing(this);
-    this.play(`${ASSETS_KEYS.EXPLOSION}_anim`);
+    this.play(`${ASSETS_CONSTANTS.EXPLOSION}_anim`);
   }
 }

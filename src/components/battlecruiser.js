@@ -2,12 +2,11 @@ import { Physics, Input } from 'phaser';
 import Player from '../classes/player';
 import Explosion from './explosion';
 import Beam from './beam';
-import ASSETS_KEYS from '../keys/assets';
-import CONFIG from '../config';
+import { ASSETS_CONSTANTS, GAME_CONFIG } from '../helpers/constants';
 
 export default class BattleCruiser extends Physics.Arcade.Sprite {
   constructor(currentScene, playerName, positionX, positionY) {
-    super(currentScene, positionX, positionY, ASSETS_KEYS.BATTLE_CRUISER);
+    super(currentScene, positionX, positionY, ASSETS_CONSTANTS.BATTLE_CRUISER);
 
     currentScene.add.existing(this);
     currentScene.physics.world.enableBody(this);
@@ -42,15 +41,15 @@ export default class BattleCruiser extends Physics.Arcade.Sprite {
   }
 
   reset() {
-    const positionX = CONFIG.width / 2;
-    const positionY = CONFIG.height;
+    const positionX = GAME_CONFIG.width / 2;
+    const positionY = GAME_CONFIG.height;
 
     this.enableBody(true, positionX, positionY, true, true);
 
     this.alpha = 0.5;
     this.scene.tweens.add({
       targets: this,
-      y: CONFIG.height - 64,
+      y: GAME_CONFIG.height - 64,
       ease: 'Power1',
       duration: 1500,
       repeat: 0,
@@ -77,8 +76,8 @@ export default class BattleCruiser extends Physics.Arcade.Sprite {
     });
 
     this.player.lives -= 1;
-    currentPlayer.scene.sound.play(ASSETS_KEYS.EXPLOSION_SOUND, { volume: 0.1 });
-    currentPlayer.scene.lives.setTexture(`${ASSETS_KEYS.LIFE}0${this.player.lives}`);
+    currentPlayer.scene.sound.play(ASSETS_CONSTANTS.EXPLOSION_SOUND, { volume: 0.1 });
+    currentPlayer.scene.lives.setTexture(`${ASSETS_CONSTANTS.LIFE}0${this.player.lives}`);
   }
 
   hitEnemy(projectile, enemy) {
@@ -86,6 +85,6 @@ export default class BattleCruiser extends Physics.Arcade.Sprite {
     this.player.score += 5 * enemy.speed;
     projectile.destroy();
     enemy.reset();
-    this.scene.sound.play(ASSETS_KEYS.EXPLOSION_SOUND, { volume: 0.1 });
+    this.scene.sound.play(ASSETS_CONSTANTS.EXPLOSION_SOUND, { volume: 0.1 });
   }
 }

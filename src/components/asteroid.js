@@ -1,10 +1,9 @@
 import { Physics, Math } from 'phaser';
-import CONFIG from '../config';
-import ASSETS_KEYS from '../keys/assets';
+import { ASSETS_CONSTANTS, GAME_CONFIG } from '../helpers/constants';
 
 export default class Asteroid extends Physics.Arcade.Sprite {
   constructor(type, speedMovement, currentScene, positionX, positionY) {
-    super(currentScene, positionX, positionY, `${ASSETS_KEYS.ASTEROID}${type}`);
+    super(currentScene, positionX, positionY, `${ASSETS_CONSTANTS.ASTEROID}${type}`);
 
     currentScene.add.existing(this);
     currentScene.physics.world.enableBody(this);
@@ -18,17 +17,17 @@ export default class Asteroid extends Physics.Arcade.Sprite {
 
   reset() {
     this.y = 0;
-    this.x = Math.Between(25, CONFIG.width - 25);
+    this.x = Math.Between(25, GAME_CONFIG.width - 25);
   }
 
   move() {
     this.y += this.speed;
-    if (this.y > CONFIG.height) {
+    if (this.y > GAME_CONFIG.height) {
       this.reset();
     }
   }
 
   type() {
-    return `${ASSETS_KEYS.ASTEROID}${this.typeOf}`;
+    return `${ASSETS_CONSTANTS.ASTEROID}${this.typeOf}`;
   }
 }
