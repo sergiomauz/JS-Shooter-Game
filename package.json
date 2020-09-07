@@ -8,7 +8,8 @@
     "dev": "webpack --mode development",
     "pro": "webpack -p",
     "watch": "webpack --w --mode development",
-    "start": "webpack-dev-server --open"
+    "start": "webpack-dev-server --open",
+    "test": "jest"
   },
   "repository": {
     "type": "git",
@@ -46,6 +47,8 @@
   },
   "dependencies": {
     "babel-polyfill": "^6.26.0",
+    "jest-fetch-mock": "^3.0.3",
+    "node-fetch": "^2.6.1",
     "phaser": "^3.24.1"
   }
 }

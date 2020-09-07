@@ -1,0 +1,10 @@
+body {
+  background: #000010;
+}
+
+.main {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}

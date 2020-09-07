@@ -31,13 +31,13 @@ module.exports = {
         ],
       },
       {
-        test: /\.(png|svg|jpg|gif)$/,
+        test: /\.(png|svg|jpg|gif|xml)$/,
         use: [
           'file-loader',
         ],
       },
       {
-        test: /\.(mp3|mod)$/,
+        test: /\.(mp3|wav|mod)$/,
         use: [
           'file-loader',
         ],
