@@ -27,6 +27,9 @@ test('When a Leaderboard request scores and fails, DATA is an empty array.', asy
   if (top10.code === 0) {
     expect(Array.isArray(top10.data)).toBe(true);
     expect(top10.data.length).toBe(0);
+  } else {
+    expect(top10.data[0]).toHaveProperty('user');
+    expect(top10.data[0]).toHaveProperty('score');
   }
 });
 
